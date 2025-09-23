@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import "./App.css";
 
-// Components
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import PopularProducts from "./components/PopularProducts";
@@ -20,7 +19,6 @@ import GlobalLoader from "./components/GlobalLoader";
 
 function App() {
   useEffect(() => {
-    // ✅ Lenis initialization
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -38,10 +36,7 @@ function App() {
 
   return (
     <Router>
-      {/* ✅ Navbar hamesha visible */}
       <Navbar />
-
-      {/* ✅ Sirf content area loader ke andar */}
 
       <Routes>
         {/* Home Page */}
@@ -61,12 +56,25 @@ function App() {
           }
         />
 
-        {/* Men Page */}
-        <Route path="/men" element={<GlobalLoader delay={2000}> <WorkspaceSale /> </GlobalLoader>} />
+        {/* Men / Women Pages */}
+        <Route
+          path="/men"
+          element={
+            <GlobalLoader delay={1500}>
+              <WorkspaceSale defaultCollection="men" />
+            </GlobalLoader>
+          }
+        />
+        <Route
+          path="/women"
+          element={
+            <GlobalLoader delay={1500}>
+              <WorkspaceSale defaultCollection="women" />
+            </GlobalLoader>
+          }
+        />
       </Routes>
 
-
-      {/* ✅ Footer hamesha visible */}
       <Footer />
     </Router>
   );
