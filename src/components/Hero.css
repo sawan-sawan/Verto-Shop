@@ -1,0 +1,141 @@
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+
+}
+
+/* 🔹 Overlay for hero */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45); /* black overlay */
+  z-index: 1;
+}
+
+/* Slider container */
+.hero-slider {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  overflow: hidden;
+}
+
+/* Each slide */
+.slide {
+  min-width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  transform: translateX(100%);
+  transition: transform 1s ease;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Active slide moves to center */
+.slide.active {
+  transform: translateX(0);
+}
+
+/* Previous slide moves left */
+.slide:not(.active) {
+  transform: translateX(-100%);
+}
+
+/* Hero text */
+.hero-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2; /* overlay ke upar */
+}
+
+/* Text only border */
+.outline-text {
+  font-size: 5rem;
+  font-weight: 800;
+  line-height: 1.1;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 2px #fff;
+}
+
+/* Colored text for emphasis */
+.colored {
+  -webkit-text-stroke: 2px #ff6825;
+    font-family: "Unbounded";
+
+}
+
+
+/* CTA */
+.cta {
+  margin-top: 20px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ff6825;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* 🔹 Arrow animation */
+.arrow {
+  color: #ff6825;
+
+  display: inline-block;
+  font-size: 1.5rem;
+  animation: bounceDown 2s infinite;
+}
+/* Hero.css */
+@keyframes pulseText {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.live-better {
+  animation: pulseText 2s infinite ease-in-out;
+}
+
+@keyframes bounceDown {
+  0%, 100% {
+    transform: translateY(0);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 1;
+  }
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .outline-text {
+    font-size: 2.5rem;
+    -webkit-text-stroke: 1px #fff;
+  }
+  .cta {
+    font-size: 1rem;
+  }
+  .colored {
+  -webkit-text-stroke: 2px #ff6825;
+}
+}

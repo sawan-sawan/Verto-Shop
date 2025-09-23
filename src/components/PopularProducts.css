@@ -1,0 +1,96 @@
+/* Section */
+.trend-section {
+  width: 100%;
+  padding: 60px 20px;
+  background: #fff;
+}
+
+/* Container */
+.container {
+  padding: 10px;
+  max-width: 1900px;
+  margin: 0 auto;
+}
+
+/* Heading */
+.trend-heading {
+  padding-top: 23px;
+  text-align: left;
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 30px;
+  color: #000;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Grid */
+.trend-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+  width: 100%;
+}
+
+/* Card */
+.trend-card {
+  text-align: left; /* align left instead of center */
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.trend-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Image */
+.trend-img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 4;   /* keeps same FashionNova proportion */
+  object-fit: cover;
+  border-radius: 0;      /* no rounding, FashionNova is sharp */
+  display: block;
+}
+
+/* Title */
+.trend-title {
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #000;
+  text-decoration: underline;
+  text-align: left;
+  text-decoration: none;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .container {
+    max-width: 95%;
+    padding: 0px;
+  }
+}
+
+@media (max-width: 992px) {
+  .trend-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .trend-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .trend-heading {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .trend-img {
+    aspect-ratio: 3 / 4;
+  }
+}

@@ -1,0 +1,56 @@
+.new-arrival {
+  padding: 60px 0;
+  background: #fff;
+  overflow: hidden;
+}
+
+.new-arrival-heading {
+  text-align: center;
+
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 40px;
+  color: #111;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.new-arrival-slider {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.new-arrival-track {
+  display: flex;
+  width: max-content;
+  animation: scroll-left 30s linear infinite;
+}
+
+.new-arrival-track:hover {
+  animation-play-state: paused;
+}
+
+.new-arrival-item {
+  width: 300px;
+  height: 450px;
+  flex-shrink: 0;
+}
+
+.new-arrival-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  display: block;
+}
+
+/* 🔥 Infinite seamless scroll */
+@keyframes scroll-left {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
