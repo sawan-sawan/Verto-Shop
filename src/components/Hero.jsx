@@ -85,14 +85,19 @@ export default function Hero() {
           WITH VERTO
         </h1>
 
-        <p
-          className="cta"
+        <button
+          className="cta-btn"
           onClick={() => {
-            gsap.to(window, { duration: 1.2, scrollTo: "#popular-products", ease: "power2.inOut" });
+            gsap.to(window, {
+              duration: 1.2,
+              scrollTo: "#popular-products",
+              ease: "power2.inOut",
+            });
           }}
         >
           SHOP NOW <span className="arrow">↓</span>
-        </p>
+        </button>
+
 
       </div>
     </section>

@@ -74,17 +74,27 @@
 
 
 /* CTA */
-.cta {
-  margin-top: 20px;
-  font-size: 1.3rem;
+.cta-btn {
+  padding: 12px 28px;
+  font-family: "Unbounded";
+  font-size: 1.6rem;
   font-weight: bold;
-  color: #ff6825;
+  background: transparent;
+  color:  #ff6825;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  justify-content: center;
+  user-select: none; /* text select hone se roke */
+  transition: all 0.3s ease;
 }
+
+.cta-btn:hover {
+  background: #fff;
+  color: #000;
+}
+
+.cta-btn:focus {
+  outline: none;
+}
+
 
 /* 🔹 Arrow animation */
 .arrow {
