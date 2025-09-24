@@ -16,6 +16,8 @@ import Footer from "./components/Footer";
 import Features from "./components/Features";
 import WorkspaceSale from "./pages/WorkpaceSale";
 import GlobalLoader from "./components/GlobalLoader";
+import CartPage from "./pages/CartPage";
+import LoginPage from "./pages/AuthLogin";
 
 function App() {
   useEffect(() => {
@@ -71,6 +73,30 @@ function App() {
             <GlobalLoader delay={1500}>
               <WorkspaceSale defaultCollection="women" />
             </GlobalLoader>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <GlobalLoader delay={1500}>
+              <CartPage />
+            </GlobalLoader>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+     
+              <LoginPage />
+      
+          }
+        />
+              <Route
+          path="/contact"
+          element={
+     
+              <Contact />
+      
           }
         />
       </Routes>

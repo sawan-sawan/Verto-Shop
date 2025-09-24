@@ -86,10 +86,9 @@ const Navbar = () => {
           <div className="actions">
             <button
               className="icon-btnn"
-              onClick={scrollToContact}
               style={{ background: "none", border: "none", cursor: "pointer", marginRight: "10px" }}
             >
-              <User size={22} />
+              <Link to="/login">      <User size={22} /> </Link>
             </button>
 
             <button
@@ -114,10 +113,9 @@ const Navbar = () => {
 
             <button
               className="icon-btn"
-              onClick={() => setIsCartOpen(true)}
               style={{ background: "none", border: "none", cursor: "pointer", marginRight: "10px" }}
             >
-              <ShoppingCart size={22} />
+              <Link to="/cart"><ShoppingCart size={22} />  </Link>
             </button>
 
             <button className="mobile-btn" onClick={() => setIsOpen(!isOpen)}>
@@ -154,14 +152,8 @@ const Navbar = () => {
                 <Link to="/women" onClick={() => setIsOpen(false)}>Women</Link>
                 <a href="#" onClick={() => setIsOpen(false)}>Accessories</a>
                 <a href="#" onClick={() => setIsOpen(false)}>Categories</a>
-                <button
-                  onClick={() => {
-                    scrollToContact();
-                    setIsOpen(false);
-                  }}
-                >
-                  Contact
-                </button>
+                <Link to="/login"  onClick={() => setIsOpen(false)}>Login&SingUp</Link>
+                <Link to="/contact"  onClick={() => setIsOpen(false)}>Contact</Link>
               </div>
             </motion.div>
           )}
