@@ -28,6 +28,8 @@
     margin: 0 auto;
     background-color: #fff; /* solid */
     z-index: 1001;
+  border: 1px solid rgba(128, 128, 128, 0.415);
+
 }
 
 /* ================= LOGO ================= */
