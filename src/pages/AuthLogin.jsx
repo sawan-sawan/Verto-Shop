@@ -31,6 +31,13 @@ export default function AuthLogin() {
         {/* Right Side */}
         <div className="auth-right">
           <div className="auth-box">
+            <div className="loginlogo">
+
+              <span className="logo-text">
+                <span className="verto">VERTO</span>{" "}
+                <span className="shop">Shop</span>
+              </span>
+            </div>
             <h2 className="auth-title">
               {isLogin ? "Welcome Back" : "Sign Up"}
             </h2>
@@ -79,6 +86,7 @@ export default function AuthLogin() {
               {isLogin ? (
                 <>
                   Don’t have an account?{" "}
+
                   <span
                     onClick={() => setIsLogin(false)}
                     style={{ cursor: "pointer", color: "blue" }}
