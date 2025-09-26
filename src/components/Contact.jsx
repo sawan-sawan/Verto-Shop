@@ -1,7 +1,10 @@
 import React from "react";
 import "./Contact.css";
+import { useScrollToTop } from "../hooks/useScrollToTop";
+
 
 export default function Contact() {
+  useScrollToTop();
   return (
     <section id="contact-section" className="contact-wrapper">
       <div className="contact-container">
