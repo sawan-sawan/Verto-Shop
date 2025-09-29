@@ -15,6 +15,19 @@ const PlusIcon = () => (
   </svg>
 );
 
+const MinusIcon = () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+);
+
+const CloseIcon = () => (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+);
+
+
 const Grid4Icon = () => (
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <rect x="3" y="3" width="8" height="8" stroke="currentColor" strokeWidth="2" />
@@ -36,7 +49,7 @@ const Grid2Icon = () => (
 const allProducts = [
   // Men Products from original list
   { id: 1, name: "Allied Down Hooded Blouson", price: 530, images: ["/img/dimg1.webp", "/img/dimg11.webp"], inStock: true, color: "Black" },
-  { id: 2, name: "TTuck Tapered Pants", price: 205, images: ["/img/dimg2.webp", "/img/nimg4.jpg"], inStock: true, color: "Beige" },
+  { id: 2, name: "1Tuck Tapered Pants", price: 205, images: ["/img/dimg2.webp", "/img/nimg4.jpg"], inStock: true, color: "Beige" },
   { id: 3, name: "Alex Merino Wool Open Placket Polo", price: 305, images: ["/img/dimg3.webp", "/img/dimg33.webp"], inStock: false, color: "White" },
   { id: 4, name: "Bowery Miller Standard Crew", price: 121, images: ["/img/dimg4.webp", "/img/dimg44.webp"], inStock: true, color: "Green" },
   { id: 5, name: "Bowery The Big Apple Crew", price: 121, images: ["/img/wimg1.jpg", "/img/wimg2.jpg"], inStock: true, color: "Black" },
@@ -60,6 +73,67 @@ const sortOptions = [
     { value: 'alpha-desc', label: 'Alphabetically, Z-A' },
 ];
 
+// --- Add to Cart Popup Component ---
+const ProductPopup = ({ product, onClose, onConfirmAddToCart }) => {
+    const [selectedSize, setSelectedSize] = useState('S');
+    const [quantity, setQuantity] = useState(1);
+    const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+
+    const handleAddToCartClick = () => {
+        // Pass the selected details to the parent
+        onConfirmAddToCart({ size: selectedSize, quantity });
+    };
+    
+    // Prevent clicks inside the popup from closing it
+    const handlePopupContentClick = (e) => {
+        e.stopPropagation();
+    };
+
+    return (
+        <div className="popup-overlay" onClick={onClose}>
+            <div className="popup-content" onClick={handlePopupContentClick}>
+                <button className="popup-close-btn" onClick={onClose}><CloseIcon /></button>
+                <div className="popup-image-container">
+                    <img src={product.images[0]} alt={product.name} />
+                </div>
+                <div className="popup-details-container">
+                    <h2>{product.name}</h2>
+                    <p className="popup-price">${product.price.toFixed(2)}</p>
+                    
+                    <div className="popup-size-selector">
+                        <label>Size</label>
+                        <div className="size-options">
+                            {sizes.map(size => (
+                                <button
+                                    key={size}
+                                    className={`size-btn ${selectedSize === size ? 'selected' : ''}`}
+                                    onClick={() => setSelectedSize(size)}
+                                >
+                                    {size}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="popup-quantity-selector">
+                        <button onClick={() => setQuantity(q => Math.max(1, q - 1))}><MinusIcon /></button>
+                        <span>{quantity}</span>
+                        <button onClick={() => setQuantity(q => q + 1)}><PlusIcon /></button>
+                    </div>
+
+                    <div className="popup-actions">
+                        <button className="popup-add-to-cart-btn" onClick={handleAddToCartClick}>
+                            Add to cart
+                        </button>
+                        <button className="popup-buy-now-btn">Buy with VertoShop</button>
+                        <a href="#" className="more-payment-options">More payment options</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 
 // --- Main Component ---
 const WorkspaceSale = ({ onAddToCart }) => {
@@ -73,6 +147,9 @@ const WorkspaceSale = ({ onAddToCart }) => {
     availability: [],
     color: [],
   });
+  
+  // New state for the popup
+  const [popupProduct, setPopupProduct] = useState(null);
 
   const filterRef = useRef(null);
 
@@ -117,7 +194,7 @@ const WorkspaceSale = ({ onAddToCart }) => {
     setProducts(filtered);
   }, [activeFilters, sortBy]);
 
-
+  // --- Handlers ---
   const handleFilterChange = (type, value) => {
     setActiveFilters(prev => {
         const currentValues = prev[type];
@@ -144,6 +221,33 @@ const WorkspaceSale = ({ onAddToCart }) => {
   const toggleFilter = (filterName) => {
     setOpenFilter(openFilter === filterName ? null : filterName);
   };
+
+  // --- NEW POPUP AND CART LOGIC ---
+  const handleOpenPopup = (product) => {
+    // Show popup only on desktop
+    if (window.innerWidth > 768) {
+        setPopupProduct(product);
+    } else {
+        // On mobile, add to cart directly with default values for a better UX
+        console.log("Item added on mobile:", product.name);
+        onAddToCart(product, { size: 'M', quantity: 1 });
+    }
+  };
+
+  const handleClosePopup = () => {
+    setPopupProduct(null);
+  };
+  
+  const handleConfirmAddToCart = (details) => {
+    console.log("Item added to cart:", popupProduct.name, details);
+    onAddToCart(popupProduct, details);
+    
+    // Close popup automatically after adding
+    setTimeout(() => {
+        handleClosePopup();
+    }, 500); // Small delay to allow user to see confirmation if any
+  };
+
 
   return (
     <div className="product-page-container">
@@ -181,7 +285,7 @@ const WorkspaceSale = ({ onAddToCart }) => {
           </div>
           <div className="filter-group">
              <button onClick={() => toggleFilter('color')} className="filter-button">
-              Color <ChevronDownIcon />
+               Color <ChevronDownIcon />
             </button>
             {openFilter === 'color' && (
               <div className="filter-dropdown">
@@ -191,13 +295,13 @@ const WorkspaceSale = ({ onAddToCart }) => {
                 </div>
                 <div className="color-swatch-list">
                   {colorOptions.map(color => (
-                     <button
-                        key={color}
-                        className={`color-swatch ${activeFilters.color.includes(color) ? 'selected' : ''}`}
-                        style={{ backgroundColor: color.toLowerCase() === 'multi' ? 'conic-gradient(red, yellow, lime, aqua, blue, magenta, red)' : color }}
-                        title={color}
-                        onClick={() => handleFilterChange('color', color)}
-                     />
+                       <button
+                          key={color}
+                          className={`color-swatch ${activeFilters.color.includes(color) ? 'selected' : ''}`}
+                          style={{ backgroundColor: color.toLowerCase() === 'multi' ? 'conic-gradient(red, yellow, lime, aqua, blue, magenta, red)' : color }}
+                          title={color}
+                          onClick={() => handleFilterChange('color', color)}
+                       />
                   ))}
                 </div>
               </div>
@@ -212,19 +316,19 @@ const WorkspaceSale = ({ onAddToCart }) => {
               Sort <ChevronDownIcon />
             </button>
             {openFilter === 'sort' && (
-               <div className="filter-dropdown sort-dropdown">
-                 <ul className="dropdown-list sort-list">
-                  {sortOptions.map(option => (
-                    <li
-                      key={option.value}
-                      className={sortBy === option.value ? 'active' : ''}
-                      onClick={() => handleSortChange(option.value)}
-                    >
-                      {option.label}
-                    </li>
-                  ))}
-                 </ul>
-               </div>
+                <div className="filter-dropdown sort-dropdown">
+                   <ul className="dropdown-list sort-list">
+                    {sortOptions.map(option => (
+                      <li
+                        key={option.value}
+                        className={sortBy === option.value ? 'active' : ''}
+                        onClick={() => handleSortChange(option.value)}
+                      >
+                        {option.label}
+                      </li>
+                    ))}
+                   </ul>
+                </div>
             )}
           </div>
           <div className="layout-toggle">
@@ -243,22 +347,29 @@ const WorkspaceSale = ({ onAddToCart }) => {
             <div className="image-container">
               <img className="img-main" src={item.images[0]} alt={item.name} />
               <img className="img-hover" src={item.images[1]} alt={item.name} />
-              <div className="hover-content">
-                <button
-                  className="quick-add-btn"
-                  onClick={() => onAddToCart && onAddToCart(item)}
-                >
-                  <PlusIcon /> Add
-                </button>
-              </div>
             </div>
             <div className="product-info">
               <p className="product-name">{item.name}</p>
               <p className="product-price">${item.price}</p>
+              <button
+                className="add-to-cart-btn"
+                onClick={() => handleOpenPopup(item)}
+              >
+                <PlusIcon /> Add
+              </button>
             </div>
           </div>
         ))}
       </div>
+      
+      {/* --- Render the Popup Conditionally --- */}
+      {popupProduct && (
+        <ProductPopup 
+          product={popupProduct}
+          onClose={handleClosePopup}
+          onConfirmAddToCart={handleConfirmAddToCart}
+        />
+      )}
     </div>
   );
 };
