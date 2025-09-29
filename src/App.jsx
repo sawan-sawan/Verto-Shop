@@ -124,10 +124,10 @@ function App() {
           path="/men"
           element={
             <GlobalLoader delay={1500}>
-              <WorkspaceSale 
-                defaultCollection="men" 
+              <WorkspaceSale
+                defaultCollection="men"
                 onAddToCart={handleAddToCart}
-                justAddedProductId={justAddedProductId} 
+                justAddedProductId={justAddedProductId}
               />
             </GlobalLoader>
           }
@@ -136,9 +136,9 @@ function App() {
           path="/women"
           element={
             <GlobalLoader delay={1500}>
-              <WorkspaceSale 
-                defaultCollection="women" 
-                onAddToCart={handleAddToCart} 
+              <WorkspaceSale
+                defaultCollection="women"
+                onAddToCart={handleAddToCart}
                 justAddedProductId={justAddedProductId}
               />
             </GlobalLoader>
@@ -147,12 +147,12 @@ function App() {
         <Route
           path="/cart"
           element={
-            <GlobalLoader delay={1500}>
-              <CartPage 
-                cartItems={cartItems} 
-                onUpdateQuantity={handleUpdateQuantity} 
-              />
-            </GlobalLoader>
+
+            <CartPage
+              cartItems={cartItems}
+              onUpdateQuantity={handleUpdateQuantity}
+            />
+
           }
         />
         <Route

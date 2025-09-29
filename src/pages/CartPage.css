@@ -24,10 +24,12 @@
   margin-bottom: 2rem;
 }
 .cart-header h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: var(--text-dark);
-  margin: 0;
+  text-align: left;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #141313;
+  text-transform: uppercase;
+  letter-spacing: 0px;
 }
 .cart-header p {
   font-size: 1rem;
@@ -107,6 +109,7 @@
 }
 .cart-item-quantity {
   display: flex;
+  padding-top: 10px;
   justify-content: center;
 }
 
@@ -115,7 +118,8 @@
   align-items: center;
   border: 1px solid var(--border-color);
   border-radius: 50px;
-  padding: 0.25rem;
+  padding: 0rem;
+  padding-top: 0px;
 }
 .quantity-control button {
   background-color: var(--background-grey);
@@ -269,35 +273,161 @@
   color: var(--text-light);
   margin: 0;
 }
+/* --- ADD THESE NEW STYLES TO THE END OF YOUR CartPage.css FILE --- */
 
-/* Responsive */
-@media (max-width: 992px) {
+.empty-cart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 4rem 2rem;
+  margin: 2rem auto;
+  max-width: 600px;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  background-color: #fff;
+}
+
+.empty-cart-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #f9f9f9;
+  margin-bottom: 2rem;
+}
+
+.empty-cart-container h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d2d2d;
+  margin: 0 0 0.5rem;
+}
+
+.empty-cart-container p {
+  font-size: 1rem;
+  color: #6a6a6a;
+  margin-bottom: 2rem;
+}
+
+.continue-shopping-btn {
+  background-color: #ff6825; /* Orange color from image */
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0.8rem 2rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.continue-shopping-btn:hover {
+  background-color: #e05a1a;
+}
+/* ================================================= */
+/* --- ADD OR REPLACE THIS RESPONSIVE SECTION --- */
+/* ================================================= */
+
+@media (max-width: 1024px) {
   .cart-main-content {
+    /* Stack the summary below the cart items on tablets */
     grid-template-columns: 1fr;
   }
 }
+
 @media (max-width: 768px) {
-  .cart-item-card {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    text-align: left;
+  .cart-page-container {
+    padding: 6rem 1.5rem 2rem; /* Adjust padding for mobile */
   }
+
+  .cart-header h1 {
+    font-size: 2rem;
+  }
+  
+  /* Hide the desktop header row for products */
   .cart-items-header {
     display: none;
   }
-  .cart-item-price, .cart-item-quantity, .cart-item-total {
-    text-align: left;
-    justify-content: flex-start;
+
+  /* Make the cart item a 2-column layout on mobile */
+  .cart-item-card {
+    grid-template-columns: 0px 1fr; /* Image column and content column */
+    gap: 0 1rem; /* 0 row gap, 1rem column gap */
   }
+
+  /* Place the image in the first column and make it span all rows */
+  .cart-item-product img {
+    grid-column: 1 / 2;
+    grid-row: 1 / 4; /* Span 3 rows: name, quantity, total */
+    width: 90px;
+    height: 110px;
+    align-self: start;
+  }
+  
+  /* The .cart-item-product container now only holds the text details */
   .cart-item-product {
-    grid-column: 1 / -1;
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    align-self: start;
+    padding-top: 0;
   }
+
+  /* Hide the original price column, as price is shown with the name */
+  .cart-item-price {
+    display: none; 
+  }
+
+  /* Place quantity controls in the second row */
+  .cart-item-quantity {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    justify-content: flex-start; /* Align to the left */
+    align-self: center;
+  }
+
+  /* Place total price in the third row, aligned to the right */
+  .cart-item-total {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+    text-align: right;
+    align-self: center;
+    font-size: 1.2rem;
+    color: var(--text-dark);
+  }
+
+  /* Stack info boxes into 2 columns */
   .info-footer {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
   }
 }
+
 @media (max-width: 480px) {
+  .cart-page-container {
+    padding: 6rem 1rem 2rem;
+  }
+  .cart-header h1 {
+    font-size: 1.8rem;
+  }
+
+  /* Stack info boxes into a single column on very small screens */
   .info-footer {
     grid-template-columns: 1fr;
+  }
+
+  /* Adjust product image size for very small screens */
+  .cart-item-card {
+    grid-template-columns: 0px 1fr;
+  }
+  .cart-item-product img {
+    width: 75px;
+    height: 95px;
+  }
+  .quantity-control{
+    padding: 0px;
+    
   }
 }
