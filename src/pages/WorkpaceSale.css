@@ -1,386 +1,351 @@
-html,
+/* --- General Setup & Variables --- */
+:root {
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --background-light: #f9fafb;
+  --background-white: #ffffff;
+}
+
 body {
-  background-color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--background-white);
+  color: var(--text-primary);
 }
 
-
-/* Container */
-.workspace-sale-container {
-  width: 100%;
-  min-height: 100vh;
-  padding: 100px 70px;
-  font-family: Arial, sans-serif;
-  background-color: #f9fafb;
-}
-
-.workspace-sale-content {
-  max-width: 1250px;
+/* --- Main Page Layout --- */
+.product-page-container {
+  max-width: 1600px;
   margin: 0 auto;
+  padding: 2rem 2.5rem;
 }
 
-/* Topbar */
-.workspace-sale-topbar {
+.page-header {
+  padding: 1rem 0 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.page-header h1 {
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+/* --- Toolbar (Filters & Tools) --- */
+.toolbar-container {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+}
+
+.filters-wrapper, .tools-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.product-count {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* --- Filter Dropdowns (No Changes) --- */
+.filter-group {
+  position: relative;
+}
+
+.filter-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--background-white);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.2s;
+}
+
+.filter-button:hover {
+  background-color: var(--background-light);
+}
+
+.filter-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 280px;
+  background-color: var(--background-white);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  z-index: 50;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.workspace-sale-filter-icon {
-  display: none;
+.dropdown-header span {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.clear-button {
+  background: none;
+  border: none;
+  text-decoration: underline;
   cursor: pointer;
-  font-size: 1rem;
-  padding: 6px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
 }
 
-/* Filters */
-.workspace-sale-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 22px;
+.dropdown-list {
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
 }
 
-.workspace-sale-filter-chip {
-  background: #f5f5f5;
-  padding: 6px 12px;
-  border-radius: 12px;
+.dropdown-list li {
+  padding: 0.5rem 1rem;
+}
+
+.dropdown-list label {
   display: flex;
   align-items: center;
-  gap: 6px;
-}
-
-.workspace-sale-filter-chip button {
-  border: none;
-  background: transparent;
+  gap: 0.75rem;
+  font-size: 0.9rem;
   cursor: pointer;
-  color: #777;
 }
 
-/* Product grid */
-.workspace-sale-product-grid {
+.dropdown-list input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  cursor: pointer;
+}
+
+.color-swatch-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+.color-swatch {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.color-swatch.selected {
+  border-color: var(--text-primary);
+  box-shadow: 0 0 0 2px var(--background-white) inset;
+}
+
+.sort-dropdown {
+  width: 220px;
+}
+
+.sort-list li {
+  cursor: pointer;
+  transition: background-color 0.2s;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  margin: 0 0.5rem;
+}
+.sort-list li.active {
+    font-weight: 600;
+}
+.sort-list li:hover {
+  background-color: var(--background-light);
+}
+
+.active-filter-count {
+    background-color: var(--text-primary);
+    color: var(--background-white);
+    font-size: 0.75rem;
+    font-weight: 500;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: -0.5rem;
+}
+
+.layout-toggle {
   display: flex;
-  flex-wrap: wrap;
-  column-gap: 16px;
-  row-gap: 50px;
-  justify-content: center;
-}
-
-/* Card styling */
-.workspace-sale-product-card {
-  flex: 1 1 calc(25% - 12px);
-  max-width: calc(25% - 12px);
-}
-
-.image-group {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 3/4;
-  border-radius: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
   overflow: hidden;
 }
 
-.image-group img {
+.layout-toggle button {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+}
+
+.layout-toggle button:first-child {
+  border-right: 1px solid var(--border-color);
+}
+
+.layout-toggle button.active {
+  background-color: var(--background-light);
+  color: var(--text-primary);
+}
+
+/* --- Product Grid & Card (Flexbox Layout) --- */
+.product-grid {
+  display: flex;      /* Grid से Flex में बदला गया */
+  flex-wrap: wrap;      /* Items को अगली line में wrap करने के लिए */
+  gap: 1.5rem 1rem;
+}
+
+.product-card {
+  text-align: left;
+  /* हर कार्ड की चौड़ाई को कंट्रोल करने के लिए flex-basis का उपयोग */
+  flex: 0 1 calc(20% - 1rem); /* 5 columns के लिए बेस साइज़ */
+}
+
+.image-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.image-container img {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.4s ease;
-  border-radius: 0.5rem;
-}
-
-.img-default {
-  opacity: 1;
+  transition: opacity 0.4s ease-in-out;
   z-index: 1;
 }
 
 .img-hover {
   opacity: 0;
-  z-index: 2;
 }
 
-.image-group:hover .img-default {
-  opacity: 0;
-}
-
-.image-group:hover .img-hover {
+.product-card:hover .img-hover {
   opacity: 1;
 }
 
-.discount-badge {
+.hover-content {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  background: black;
-  color: white;
-  font-size: 0.8rem;
-  padding: 4px 8px;
-  border-radius: 4px;
-  z-index: 5;
-}
-
-.product-name {
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
-  color: #111;
-}
-
-.product-price {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #000;
-}
-
-/* Slide-out panel */
-.mobile-filter-panel {
-  position: fixed;
   top: 0;
-  right: -100%;
-  width: 250px;
+  left: 0;
+  width: 100%;
   height: 100%;
-  background: #fff;
-  z-index: 1000;
-  padding: 20px;
-  box-shadow: -2px 0 12px rgba(0, 0, 0, 0.2);
-  transition: right 0.3s ease;
+  z-index: 2; 
 }
 
-.mobile-filter-panel.open {
-  right: 0;
-}
-
-.filter-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.close-filter {
-  cursor: pointer;
-}
-
-/* Buttons inside panel */
-.filter-options button {
-  display: block;
-  margin-bottom: 8px;
-  padding: 6px 10px;
-  border-radius: 6px;
-  border: 1px solid #ddd;
-  background: #f5f5f5;
-  cursor: pointer;
-}
-
-
-
-.custom-dropdown {
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  margin-bottom: 12px;
-  overflow: hidden;
-}
-
-.dropdown-header {
-  padding: 10px;
-  background: #f5f5f5;
-  cursor: pointer;
-}
-
-.dropdown-options {
-  background: #fff;
-  border-top: 1px solid #ddd;
-  display: flex;
-  flex-direction: column;
-  max-height: 200px;
-  overflow-y: auto;
-}
-
-.dropdown-options div {
-  padding: 10px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.dropdown-options div:hover {
-  background: #f0f0f0;
-}
-
-.price-cart-row {
+.quick-add-btn {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-top: 5px;
-}
-
-.add-to-cart-btn {
-  background-color: #ff6825;
-  color: white;
-  border: none;
-  padding: 5px 10px;
+  gap: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid var(--border-color);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
-  font-size: 0.85rem;
-  border-radius: 4px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
 }
 
-.add-to-cart-btn:hover {
-  opacity: 0.7;
-}
-.loading-spinner {
-  font-size: 20px;
-  text-align: center;
-  padding: 50px;
-  font-weight: bold;
-  animation: blink 1s infinite;
+.product-card:hover .quick-add-btn {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-@keyframes blink {
-  50% { opacity: 0.5; }
+.product-info .product-name {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0 0 0.25rem 0;
+  color: var(--text-primary);
 }
 
-.workspace-sale-navbar {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
+.product-info .product-price {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin: 0;
 }
 
-.workspace-sale-navbar button {
-  padding: 8px 15px;
-  border: none;
-  background: black;
-  color: white;
-  cursor: pointer;
-  border-radius: 6px;
-}
 
-.workspace-sale-navbar button:hover {
-  background: gray;
-}
+/* --- Responsive Flexbox Layout --- */
+/* अब हम grid-template-columns के बजाय product-card की चौड़ाई बदलते हैं */
 
-/* Responsive */
-@media (max-width: 1024px) {
-  .workspace-sale-product-card {
-    flex: 1 1 calc(33.33% - 12px);
-    max-width: calc(33.33% - 12px);
+/* Large tablets (<1200px) - 4 products per row */
+@media (max-width: 1200px) {
+  .product-card {
+    flex-basis: calc(25% - 1rem); /* 100% / 4 = 25% */
   }
 }
 
+/* Tablets (<992px) - 3 products per row */
+@media (max-width: 992px) {
+  .product-card {
+    flex-basis: calc(33.33% - 1rem); /* 100% / 3 = 33.33% */
+  }
+}
+
+/* Mobile (<768px) - 2 products per row */
 @media (max-width: 768px) {
-  .workspace-sale-dropdowns {
+  .product-page-container {
+    padding: 1.5rem 1rem;
+  }
+  .product-count {
     display: none;
   }
-
-  .workspace-sale-filter-icon {
-    display: inline-flex;
+  .product-grid {
+    gap: 1.5rem 0.75rem;
   }
-
-  .workspace-sale-product-card {
-    flex: 1 1 calc(50% - 12px);
-    max-width: calc(50% - 12px);
-  }
-  .product-price{
-    font-size: 1.1rem;
+  .product-card {
+    flex-basis: calc(50% - 0.75rem); /* 100% / 2 = 50% */
   }
 }
 
-/* 👇 595px aur usse niche screens ke liye */
-@media (max-width: 595px) {
-  .workspace-sale-container {
-    padding: 80px 20px;
-    /* padding kam kar diya */
-  }
-
-  .workspace-sale-product-grid {
-    gap: 8px;
-    /* gap kam */
-  }
-
-  .workspace-sale-product-card {
-    flex: 1 1 calc(50% - 8px);
-    max-width: calc(50% - 8px);
-  }
-}
-
-/* Chhoti phones ke liye bhi 2 cards per row */
-@media (max-width: 400px) {
-  .workspace-sale-product-card {
-    flex: 1 1 calc(50% - 6px);
-    max-width: calc(50% - 6px);
-  }
-
-  .add-to-cart-btn {
-    background-color: #ff6825;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 0.70rem;
-    border-radius: 4px;
-  }
-
-}
-
-/* Title + Subtitle */
-.workspace-sale-title {
-  text-align: center;
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: #000000;
-  font-family: "Unbounded";
-  letter-spacing: 0.5px;
-  padding-top: 34px;
-  text-transform: uppercase;
-}
-
-.workspace-sale-subtitle {
-  font-size: 1.1rem;
-  font-weight: 400;
-  color: #4b5563;
-  /* Muted gray */
-  text-align: center;
-  max-width: 750px;
-  margin: 0 auto 40px;
-  line-height: 1.6;
-}
-
-/* Responsive Typography */
-@media (max-width: 1024px) {
-  .workspace-sale-title {
-    font-size: 2.2rem;
-  }
-
-  .workspace-sale-subtitle {
-    font-size: 1rem;
-    max-width: 650px;
-  }
-}
-
-@media (max-width: 768px) {
-  .workspace-sale-title {
-    font-size: 1.8rem;
-  }
-
-  .workspace-sale-subtitle {
-    font-size: 0.95rem;
-    padding: 0 20px;
-  }
-
-  .workspace-sale-product-grid {
-    column-gap: 10px;
-    row-gap: 50px;
-
-  }
-}
-
+/* Small mobile (<480px) - 1 product per row */
 @media (max-width: 480px) {
-  .workspace-sale-title {
-    font-size: 1.5rem;
+  .tools-wrapper {
+      width: 100%;
+      justify-content: space-between;
   }
-
-  .workspace-sale-subtitle {
-    font-size: 0.9rem;
-    padding: 0 10px;
+  .product-card {
+      flex-basis: 48%; /* पूरी चौड़ाई लेता है */
   }
 }
