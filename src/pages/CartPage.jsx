@@ -34,6 +34,36 @@ export default function CartPage() {
       qty: 1,
       img: "/img/nimg1.webp",
     },
+      {
+      id: 1,
+      name: "Fitted Blazer",
+      color: "White",
+      size: "M",
+      stock: 100,
+      price: 1999,
+      qty: 1,
+      img: "/img/dimg1.webp",
+    },
+    {
+      id: 2,
+      name: "Ribbed Tank",
+      color: "White",
+      size: "S",
+      stock: 100,
+      price: 299,
+      qty: 2,
+      img: "/img/dimg4.webp",
+    },
+    {
+      id: 3,
+      name: "Cargo Shorts",
+      color: "White",
+      size: "S",
+      stock: 100,
+      price: 699,
+      qty: 1,
+      img: "/img/nimg1.webp",
+    },
   ]);
   useScrollToTop();
 
