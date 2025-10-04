@@ -16,6 +16,7 @@
     "@heroicons/react": "^2.2.0",
     "@studio-freight/lenis": "^1.0.42",
     "animate.css": "^4.1.1",
+    "firebase": "^12.3.0",
     "framer-motion": "^12.23.16",
     "gsap": "^3.13.0",
     "lucide-react": "^0.544.0",

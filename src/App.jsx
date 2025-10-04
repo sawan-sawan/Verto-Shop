@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from "react";
+// App.jsx (Final Fix for Race Condition)
+
+import React, { useState, useEffect, useCallback } from "react";
 import Lenis from "@studio-freight/lenis";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+
+import { auth, db } from "./firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import "./App.css";
 
+// Components
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import PopularProducts from "./components/PopularProducts";
@@ -14,71 +21,112 @@ import Contact from "./components/Contact";
 import OfferBanner from "./components/OfferBanner";
 import Footer from "./components/Footer";
 import Features from "./components/Features";
-import WorkspaceSale from "./pages/WorkpaceSale";
 import GlobalLoader from "./components/GlobalLoader";
+
+// Pages
+import WorkspaceSale from "./pages/WorkpaceSale";
 import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/AuthLogin";
+import ProfilePage from "./pages/ProfilePage";
 
 function App() {
-  // --- START: CART STATE MANAGEMENT ---
-
-  // Load cart from sessionStorage or start with an empty array
-  const [cartItems, setCartItems] = useState(() => {
-    try {
-      const localData = sessionStorage.getItem('cartItems');
-      return localData ? JSON.parse(localData) : [];
-    } catch (error) {
-      console.error("Could not parse cart items from sessionStorage", error);
-      return [];
-    }
-  });
-
-  // State to trigger animation on the product card
+  const [currentUser, setCurrentUser] = useState(null);
+  const [loadingAuth, setLoadingAuth] = useState(true);
+  const [cartItems, setCartItems] = useState([]);
   const [justAddedProductId, setJustAddedProductId] = useState(null);
+  
+  // === START: RACE CONDITION FIX ===
+  const [initialCartLoaded, setInitialCartLoaded] = useState(false);
+  // === END: RACE CONDITION FIX ===
 
-  // Save cart to sessionStorage whenever it changes
+  const loadCartFromFirestore = useCallback(async (userId) => {
+    if (!userId) return;
+    const cartRef = doc(db, "carts", userId);
+    try {
+      const cartSnap = await getDoc(cartRef);
+      if (cartSnap.exists()) {
+        setCartItems(cartSnap.data().items || []);
+      } else {
+        setCartItems([]);
+      }
+    } catch (error) {
+      console.error("Error loading cart from Firestore:", error);
+    } finally {
+      // === START: RACE CONDITION FIX ===
+      // Signal bhej do ki initial cart load ho chuka hai
+      setInitialCartLoaded(true);
+      // === END: RACE CONDITION FIX ===
+    }
+  }, []);
+
   useEffect(() => {
-    sessionStorage.setItem('cartItems', JSON.stringify(cartItems));
-  }, [cartItems]);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
+      if (user) {
+        loadCartFromFirestore(user.uid);
+      } else {
+        setCartItems([]);
+        // === START: RACE CONDITION FIX ===
+        // Logout par signal reset kar do
+        setInitialCartLoaded(false);
+        // === END: RACE CONDITION FIX ===
+      }
+      setLoadingAuth(false);
+    });
+    return () => unsubscribe();
+  }, [loadCartFromFirestore]);
+
+  useEffect(() => {
+    const saveCartToFirestore = async () => {
+      // === START: RACE CONDITION FIX ===
+      // Ab hum tabhi save karenge jab initial cart load ho chuka ho
+      if (currentUser && !loadingAuth && initialCartLoaded) {
+      // === END: RACE CONDITION FIX ===
+        const cartRef = doc(db, "carts", currentUser.uid);
+        try {
+          await setDoc(cartRef, { items: cartItems });
+        } catch (error) {
+          console.error("Error saving cart to Firestore:", error);
+        }
+      }
+    };
+    saveCartToFirestore();
+  }, [cartItems, currentUser, loadingAuth, initialCartLoaded]); // initialCartLoaded ko dependency mein add karein
 
   const handleAddToCart = (product, details) => {
-    // A unique ID for each cart item, combining product ID and size
     const cartId = `${product.id}-${details.size}`;
-
-    setCartItems(prevItems => {
-      const existingItem = prevItems.find(item => item.cartId === cartId);
-
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item.cartId === cartId);
       if (existingItem) {
-        // If item with same ID and size exists, update its quantity
-        return prevItems.map(item =>
+        return prevItems.map((item) =>
           item.cartId === cartId
             ? { ...item, quantity: item.quantity + details.quantity }
             : item
         );
       } else {
-        // Otherwise, add the new item to the cart
         return [...prevItems, { ...product, ...details, cartId }];
       }
     });
-
-    // Trigger animation on product card
     setJustAddedProductId(product.id);
-    setTimeout(() => setJustAddedProductId(null), 600); // Animation duration matches CSS
+    setTimeout(() => setJustAddedProductId(null), 600);
   };
 
   const handleUpdateQuantity = (cartId, newQuantity) => {
-    setCartItems(prevItems => {
+    setCartItems((prevItems) => {
       if (newQuantity <= 0) {
-        // Remove item if quantity is 0 or less
-        return prevItems.filter(item => item.cartId !== cartId);
+        return prevItems.filter((item) => item.cartId !== cartId);
       }
-      return prevItems.map(item =>
+      return prevItems.map((item) =>
         item.cartId === cartId ? { ...item, quantity: newQuantity } : item
       );
     });
   };
-
-  // --- END: CART STATE MANAGEMENT ---
+  
+  const cartItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  
+  const handleLogout = () => {
+    signOut(auth).catch((error) => console.error("Logout Error:", error));
+  };
 
   useEffect(() => {
     const lenis = new Lenis({
@@ -94,78 +142,31 @@ function App() {
     requestAnimationFrame(raf);
   }, []);
 
-  // Calculate total number of items in the cart for the badge
-  const cartItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-
   return (
     <Router>
-      <Navbar cartItemCount={cartItemCount} />
+      <Navbar cartItemCount={cartItemCount} user={currentUser} handleLogout={handleLogout} />
+      
+      {loadingAuth ? (
+        <GlobalLoader />
+      ) : (
+        <>
+          <Routes>
+            {/* Home Page */}
+            <Route path="/" element={<><Hero /><PopularProducts /><Categories /><NewArrival /><DealsSection /><OfferBanner /><Features /><Contact /></>}/>
+            
+            {/* Other Pages */}
+            <Route path="/men" element={<GlobalLoader><WorkspaceSale defaultCollection="men" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} /></GlobalLoader>}/>
+            <Route path="/women" element={<GlobalLoader><WorkspaceSale defaultCollection="women" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} /></GlobalLoader>}/>
+            <Route path="/cart" element={<CartPage cartItems={cartItems} onUpdateQuantity={handleUpdateQuantity} />}/>
+            <Route path="/contact" element={<Contact />} />
 
-      <Routes>
-        {/* Home Page */}
-        <Route
-          path="/"
-          element={
-            <>
-              <Hero />
-              <PopularProducts />
-              <Categories />
-              <NewArrival />
-              <DealsSection />
-              <OfferBanner />
-              <Features />
-              <Contact />
-            </>
-          }
-        />
-
-        {/* Men / Women Pages */}
-        <Route
-          path="/men"
-          element={
-            <GlobalLoader delay={1500}>
-              <WorkspaceSale
-                defaultCollection="men"
-                onAddToCart={handleAddToCart}
-                justAddedProductId={justAddedProductId}
-              />
-            </GlobalLoader>
-          }
-        />
-        <Route
-          path="/women"
-          element={
-            <GlobalLoader delay={1500}>
-              <WorkspaceSale
-                defaultCollection="women"
-                onAddToCart={handleAddToCart}
-                justAddedProductId={justAddedProductId}
-              />
-            </GlobalLoader>
-          }
-        />
-        <Route
-          path="/cart"
-          element={
-
-            <CartPage
-              cartItems={cartItems}
-              onUpdateQuantity={handleUpdateQuantity}
-            />
-
-          }
-        />
-        <Route
-          path="/login"
-          element={<LoginPage />}
-        />
-        <Route
-          path="/contact"
-          element={<Contact />}
-        />
-      </Routes>
-
-      <Footer />
+            {/* Auth Routes */}
+            <Route path="/login" element={currentUser ? <Navigate to="/profile" /> : <LoginPage />}/>
+            <Route path="/profile" element={currentUser ? <ProfilePage user={currentUser} handleLogout={handleLogout} /> : <Navigate to="/login" />}/>
+          </Routes>
+          <Footer />
+        </>
+      )}
     </Router>
   );
 }

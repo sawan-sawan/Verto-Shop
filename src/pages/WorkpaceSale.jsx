@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from "react";
 import "./WorkpaceSale.css";
 import { useScrollToTop } from "../hooks/useScrollToTop";
+import { useNavigate } from "react-router-dom";
 
 // --- SVG Icons for UI Elements ---
 const ChevronDownIcon = () => (
@@ -136,7 +137,7 @@ const ProductPopup = ({ product, onClose, onConfirmAddToCart }) => {
 
 
 // --- Main Component ---
-const WorkspaceSale = ({ onAddToCart }) => {
+const WorkspaceSale = ({ onAddToCart, currentUser, justAddedProductId }) => {
   useScrollToTop();
 
   const [products, setProducts] = useState(allProducts);
@@ -148,10 +149,10 @@ const WorkspaceSale = ({ onAddToCart }) => {
     color: [],
   });
   
-  // New state for the popup
   const [popupProduct, setPopupProduct] = useState(null);
 
   const filterRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -224,12 +225,18 @@ const WorkspaceSale = ({ onAddToCart }) => {
 
   // --- NEW POPUP AND CART LOGIC ---
   const handleOpenPopup = (product) => {
-    // Show popup only on desktop
+    // Sabse pehle authentication check karein
+    if (!currentUser) {
+      alert("Please login or create an account to add items to your cart.");
+      navigate('/login');
+      return; // Function ko yahin rok dein
+    }
+
+    // Agar user logged in hai, to aage ka kaam karein
     if (window.innerWidth > 768) {
         setPopupProduct(product);
     } else {
         // On mobile, add to cart directly with default values for a better UX
-        console.log("Item added on mobile:", product.name);
         onAddToCart(product, { size: 'M', quantity: 1 });
     }
   };
@@ -239,7 +246,6 @@ const WorkspaceSale = ({ onAddToCart }) => {
   };
   
   const handleConfirmAddToCart = (details) => {
-    console.log("Item added to cart:", popupProduct.name, details);
     onAddToCart(popupProduct, details);
     
     // Close popup automatically after adding
@@ -285,7 +291,7 @@ const WorkspaceSale = ({ onAddToCart }) => {
           </div>
           <div className="filter-group">
              <button onClick={() => toggleFilter('color')} className="filter-button">
-               Color <ChevronDownIcon />
+                Color <ChevronDownIcon />
             </button>
             {openFilter === 'color' && (
               <div className="filter-dropdown">
@@ -295,13 +301,13 @@ const WorkspaceSale = ({ onAddToCart }) => {
                 </div>
                 <div className="color-swatch-list">
                   {colorOptions.map(color => (
-                       <button
-                          key={color}
-                          className={`color-swatch ${activeFilters.color.includes(color) ? 'selected' : ''}`}
-                          style={{ backgroundColor: color.toLowerCase() === 'multi' ? 'conic-gradient(red, yellow, lime, aqua, blue, magenta, red)' : color }}
-                          title={color}
-                          onClick={() => handleFilterChange('color', color)}
-                       />
+                      <button
+                        key={color}
+                        className={`color-swatch ${activeFilters.color.includes(color) ? 'selected' : ''}`}
+                        style={{ backgroundColor: color.toLowerCase() === 'multi' ? 'conic-gradient(red, yellow, lime, aqua, blue, magenta, red)' : color }}
+                        title={color}
+                        onClick={() => handleFilterChange('color', color)}
+                      />
                   ))}
                 </div>
               </div>
@@ -317,17 +323,17 @@ const WorkspaceSale = ({ onAddToCart }) => {
             </button>
             {openFilter === 'sort' && (
                 <div className="filter-dropdown sort-dropdown">
-                   <ul className="dropdown-list sort-list">
-                    {sortOptions.map(option => (
-                      <li
-                        key={option.value}
-                        className={sortBy === option.value ? 'active' : ''}
-                        onClick={() => handleSortChange(option.value)}
-                      >
-                        {option.label}
-                      </li>
-                    ))}
-                   </ul>
+                    <ul className="dropdown-list sort-list">
+                     {sortOptions.map(option => (
+                        <li
+                          key={option.value}
+                          className={sortBy === option.value ? 'active' : ''}
+                          onClick={() => handleSortChange(option.value)}
+                        >
+                          {option.label}
+                        </li>
+                      ))}
+                    </ul>
                 </div>
             )}
           </div>
@@ -341,9 +347,9 @@ const WorkspaceSale = ({ onAddToCart }) => {
           </div>
         </div>
       </div>
-      <div className="product-grid">
+      <div className={`product-grid ${gridLayout}`}>
         {products.map((item) => (
-          <div key={item.id} className="product-card">
+          <div key={item.id} className={`product-card ${justAddedProductId === item.id ? 'added-to-cart-animation' : ''}`}>
             <div className="image-container">
               <img className="img-main" src={item.images[0]} alt={item.name} />
               <img className="img-hover" src={item.images[1]} alt={item.name} />

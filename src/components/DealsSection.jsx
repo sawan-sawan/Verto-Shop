@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./DealsSection.css";
+import "../components/DealsSection.css";
 
 const products = [
   {
@@ -37,7 +37,7 @@ const products = [
 ];
 
 const DealsSection = () => {
-  const [timeLeft, setTimeLeft] = useState(2 * 60 * 60 + 15 * 60 + 30); // 2hr 15min 30s
+  const [timeLeft, setTimeLeft] = useState(2 * 60 * 60 + 15 * 60 + 30);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -54,44 +54,49 @@ const DealsSection = () => {
   };
 
   return (
-    <section className="deals-section">
-      <div className="deals-container">
+    <section className="hot-deals-section">
+      <div className="hot-deals-container">
         {/* Header */}
-        <div className="deals-header">
+        <div className="hot-deals-header">
           <div>
             <h2>Hot Deals</h2>
             <p>Grab them before they’re gone!</p>
           </div>
-          <div className="countdown">Ends in {formatTime(timeLeft)}</div>
+          <div className="hot-countdown">Ends in {formatTime(timeLeft)}</div>
         </div>
 
         {/* Products */}
-       <div className="products-carousel-wrapper" style={{ position: "relative" }}>
-  <button className="slider-btn left" onClick={() => {
-    document.querySelector(".products-carousel").scrollBy({ left: -200, behavior: "smooth" });
-  }}>
-    &#8249;
-  </button>
-  <div className="products-carousel">
-    {products.map((product) => (
-      <div key={product.id} className="product-card">
-        <div className="image-group">
-          <span className="discount-badge">{product.discount}</span>
-          <img className="img-default" src={product.img1} alt={product.name} />
-          <img className="img-hover" src={product.img2} alt={product.name} />
+        <div className="hot-products-carousel-wrapper" style={{ position: "relative" }}>
+          <button
+            className="slider-btn left"
+            onClick={() => {
+              document.querySelector(".hot-products-carousel").scrollBy({ left: -200, behavior: "smooth" });
+            }}
+          >
+            &#8249;
+          </button>
+          <div className="hot-products-carousel">
+            {products.map((product) => (
+              <div key={product.id} className="hot-product-card">
+                <div className="hot-image-group">
+                  <span className="hot-discount-badge">{product.discount}</span>
+                  <img className="hot-img-default" src={product.img1} alt={product.name} />
+                  <img className="hot-img-hover" src={product.img2} alt={product.name} />
+                </div>
+                <p className="hot-product-name">{product.name}</p>
+                <p className="hot-product-price">${product.price}</p>
+              </div>
+            ))}
+          </div>
+          <button
+            className="slider-btn right"
+            onClick={() => {
+              document.querySelector(".hot-products-carousel").scrollBy({ left: 200, behavior: "smooth" });
+            }}
+          >
+            &#8250;
+          </button>
         </div>
-        <p className="product-name">{product.name}</p>
-        <p className="product-price">${product.price}</p>
-      </div>
-    ))}
-  </div>
-  <button className="slider-btn right" onClick={() => {
-    document.querySelector(".products-carousel").scrollBy({ left: 200, behavior: "smooth" });
-  }}>
-    &#8250;
-  </button>
-</div>
-
       </div>
     </section>
   );
