@@ -1,5 +1,4 @@
-// App.jsx (Final Fix for Race Condition)
-
+// App.jsx (FINAL FIXED)
 import React, { useState, useEffect, useCallback } from "react";
 import Lenis from "@studio-freight/lenis";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
@@ -34,11 +33,12 @@ function App() {
   const [loadingAuth, setLoadingAuth] = useState(true);
   const [cartItems, setCartItems] = useState([]);
   const [justAddedProductId, setJustAddedProductId] = useState(null);
-  
-  // === START: RACE CONDITION FIX ===
   const [initialCartLoaded, setInitialCartLoaded] = useState(false);
-  // === END: RACE CONDITION FIX ===
 
+  // 🧠 NEW: userProfileData for name/avatar
+  const [userProfile, setUserProfile] = useState(null);
+
+  // === Load Cart from Firestore ===
   const loadCartFromFirestore = useCallback(async (userId) => {
     if (!userId) return;
     const cartRef = doc(db, "carts", userId);
@@ -52,36 +52,51 @@ function App() {
     } catch (error) {
       console.error("Error loading cart from Firestore:", error);
     } finally {
-      // === START: RACE CONDITION FIX ===
-      // Signal bhej do ki initial cart load ho chuka hai
       setInitialCartLoaded(true);
-      // === END: RACE CONDITION FIX ===
     }
   }, []);
 
+  // === Load User Profile from Firestore ===
+  const loadUserProfile = useCallback(async (userId) => {
+    if (!userId) return;
+    const profileRef = doc(db, "users", userId);
+    try {
+      const profileSnap = await getDoc(profileRef);
+      if (profileSnap.exists()) {
+        setUserProfile(profileSnap.data());
+      } else {
+        // Default profile create if not exists
+        await setDoc(profileRef, {
+          displayName: "Guest User",
+          createdAt: new Date(),
+        });
+        setUserProfile({ displayName: "Guest User" });
+      }
+    } catch (error) {
+      console.error("Error loading user profile:", error);
+    }
+  }, []);
+
+  // === Firebase Auth Listener ===
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
       if (user) {
-        loadCartFromFirestore(user.uid);
+        await Promise.all([loadCartFromFirestore(user.uid), loadUserProfile(user.uid)]);
       } else {
         setCartItems([]);
-        // === START: RACE CONDITION FIX ===
-        // Logout par signal reset kar do
+        setUserProfile(null);
         setInitialCartLoaded(false);
-        // === END: RACE CONDITION FIX ===
       }
       setLoadingAuth(false);
     });
     return () => unsubscribe();
-  }, [loadCartFromFirestore]);
+  }, [loadCartFromFirestore, loadUserProfile]);
 
+  // === Save Cart to Firestore ===
   useEffect(() => {
     const saveCartToFirestore = async () => {
-      // === START: RACE CONDITION FIX ===
-      // Ab hum tabhi save karenge jab initial cart load ho chuka ho
       if (currentUser && !loadingAuth && initialCartLoaded) {
-      // === END: RACE CONDITION FIX ===
         const cartRef = doc(db, "carts", currentUser.uid);
         try {
           await setDoc(cartRef, { items: cartItems });
@@ -91,8 +106,9 @@ function App() {
       }
     };
     saveCartToFirestore();
-  }, [cartItems, currentUser, loadingAuth, initialCartLoaded]); // initialCartLoaded ko dependency mein add karein
+  }, [cartItems, currentUser, loadingAuth, initialCartLoaded]);
 
+  // === Cart Functions ===
   const handleAddToCart = (product, details) => {
     const cartId = `${product.id}-${details.size}`;
     setCartItems((prevItems) => {
@@ -121,13 +137,14 @@ function App() {
       );
     });
   };
-  
+
   const cartItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-  
+
   const handleLogout = () => {
     signOut(auth).catch((error) => console.error("Logout Error:", error));
   };
 
+  // === Smooth Scroll (Lenis) ===
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
@@ -142,27 +159,79 @@ function App() {
     requestAnimationFrame(raf);
   }, []);
 
+  // === Render ===
   return (
     <Router>
       <Navbar cartItemCount={cartItemCount} user={currentUser} handleLogout={handleLogout} />
-      
+
       {loadingAuth ? (
         <GlobalLoader />
       ) : (
         <>
           <Routes>
             {/* Home Page */}
-            <Route path="/" element={<><Hero /><PopularProducts /><Categories /><NewArrival /><DealsSection /><OfferBanner /><Features /><Contact /></>}/>
-            
-            {/* Other Pages */}
-            <Route path="/men" element={<GlobalLoader><WorkspaceSale defaultCollection="men" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} /></GlobalLoader>}/>
-            <Route path="/women" element={<GlobalLoader><WorkspaceSale defaultCollection="women" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} /></GlobalLoader>}/>
-            <Route path="/cart" element={<CartPage cartItems={cartItems} onUpdateQuantity={handleUpdateQuantity} />}/>
+            <Route
+              path="/"
+              element={
+                <>
+                  <Hero />
+                  <PopularProducts />
+                  <Categories />
+                  <NewArrival />
+                  <DealsSection />
+                  <OfferBanner />
+                  <Features />
+                  <Contact />
+                </>
+              }
+            />
+
+            {/* Product Pages */}
+            <Route
+              path="/men"
+              element={
+                <GlobalLoader>
+                  <WorkspaceSale
+                    defaultCollection="men"
+                    onAddToCart={handleAddToCart}
+                    justAddedProductId={justAddedProductId}
+                    currentUser={currentUser}
+                  />
+                </GlobalLoader>
+              }
+            />
+            <Route
+              path="/women"
+              element={
+                <GlobalLoader>
+                  <WorkspaceSale
+                    defaultCollection="women"
+                    onAddToCart={handleAddToCart}
+                    justAddedProductId={justAddedProductId}
+                    currentUser={currentUser}
+                  />
+                </GlobalLoader>
+              }
+            />
+            <Route path="/cart" element={<CartPage cartItems={cartItems} onUpdateQuantity={handleUpdateQuantity} />} />
             <Route path="/contact" element={<Contact />} />
 
             {/* Auth Routes */}
-            <Route path="/login" element={currentUser ? <Navigate to="/profile" /> : <LoginPage />}/>
-            <Route path="/profile" element={currentUser ? <ProfilePage user={currentUser} handleLogout={handleLogout} /> : <Navigate to="/login" />}/>
+            <Route path="/login" element={currentUser ? <Navigate to="/profile" /> : <LoginPage />} />
+            <Route
+              path="/profile"
+              element={
+                currentUser ? (
+                  <ProfilePage
+                    user={currentUser}
+                    userProfile={userProfile}
+                    handleLogout={handleLogout}
+                  />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
+            />
           </Routes>
           <Footer />
         </>

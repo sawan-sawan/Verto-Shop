@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import "./AuthLogin.css";
 import { useScrollToTop } from "../hooks/useScrollToTop";
-
-// STEP 1: Firebase se zaroori cheezein import karein
-import { auth } from "../firebase"; // Aapki banayi hui firebase.js file
+import { auth } from "../firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  updateProfile, // 🔹 add this
 } from "firebase/auth";
 
 export default function AuthLogin() {
@@ -16,36 +15,34 @@ export default function AuthLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // STEP 2: handleFormSubmit function ko update karein
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
     if (isLogin) {
-      // Login Logic: Yahan Firebase ka signIn function use hoga
+      // 🔹 Login Logic
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-          // Login successful
           console.log("User logged in:", userCredential.user);
           alert("Aap successfully login ho gaye hain!");
-          // Yahan aap user ko homepage par bhej sakte hain
         })
         .catch((error) => {
-          // Agar login fail hota hai
           console.error("Login Error:", error.message);
           alert("Login failed: " + error.message);
         });
     } else {
-      // Signup Logic: Yahan Firebase ka createUser function use hoga
+      // 🔹 Signup Logic
       createUserWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Signup successful
-          console.log("User created:", userCredential.user);
+        .then(async (userCredential) => {
+          const user = userCredential.user;
+          console.log("User created:", user);
+
+          // 🔹 Update Firebase user profile with full name
+          await updateProfile(user, { displayName: fullName });
+
           alert("Aapka account safaltapoorvak ban gaya hai!");
-          // Signup ke baad aap user ko login page par bhej sakte hain
-          setIsLogin(true); 
+          setIsLogin(true);
         })
         .catch((error) => {
-          // Agar signup fail hota hai (jaise email pehle se registered hai)
           console.error("Signup Error:", error.message);
           alert("Signup failed: " + error.message);
         });
@@ -55,7 +52,6 @@ export default function AuthLogin() {
   return (
     <div className="auth-wrapper">
       <div className="auth-container">
-        {/* Left Side (No changes needed here) */}
         <div className="auth-left">
           <div className="auth-quote-box">
             <p className="auth-quote-title">
@@ -72,18 +68,27 @@ export default function AuthLogin() {
           </div>
         </div>
 
-        {/* Right Side */}
         <div className="auth-right">
           <div className="auth-box">
-            {/* ...logo, title, subtitle code... */}
             <h2 className="auth-title">
-              {isLogin ? "Welcome Back" : "Sign Up"}
+              {isLogin ? (
+                <>
+                  <span className="auth-orange">Welcome</span>{" "}
+                  <span className="auth-black">Back</span>
+                </>
+              ) : (
+                <>
+                  <span className="auth-orange">Sign</span>{" "}
+                  <span className="auth-black">Up</span>
+                </>
+              )}
             </h2>
-             <p className="auth-subtitle">
-               {isLogin
-                 ? "Enter your email and password to access your account"
-                 : "Fill in your details to register"}
-             </p>
+
+            <p className="auth-subtitle">
+              {isLogin
+                ? "Enter your email and password to access your account"
+                : "Fill in your details to register"}
+            </p>
 
             <form className="auth-form" onSubmit={handleFormSubmit}>
               {!isLogin && (
@@ -121,8 +126,6 @@ export default function AuthLogin() {
               <button type="submit" className="auth-signin-btn">
                 {isLogin ? "Sign In" : "Create Account"}
               </button>
-
-              {/* ...baki ka form code... */}
             </form>
 
             <p className="auth-footer">

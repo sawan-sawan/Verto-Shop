@@ -14,7 +14,7 @@ const GlobalLoader = ({ children, delay = 2000 }) => {
 
   return (
     <div>
-      {loading ? <Loader text="Loading products..." /> : children}
+      {loading ? <Loader text="Loading..." /> : children}
     </div>
   );
 };

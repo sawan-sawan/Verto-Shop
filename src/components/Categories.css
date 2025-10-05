@@ -1,18 +1,18 @@
 /* Section */
-.categories-section {
+.category-section {
   width: 100%;
   padding: 70px 20px;
   background: #fafafa;
 }
 
 /* Container */
-.container {
+.category-container {
   max-width: 1700px;
   margin: 0 auto;
 }
 
 /* Heading */
-.categories-heading {
+.category-heading {
   text-align: right;
   font-size: 28px;
   font-weight: 800;
@@ -23,14 +23,14 @@
 }
 
 /* Grid */
-.categories-grid {
+.category-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 25px;
 }
 
 /* Card */
-.category-card {
+.category-item {
   position: relative;
   overflow: hidden;
   border-radius: 12px;
@@ -38,27 +38,27 @@
   transition: transform 0.3s ease;
 }
 
-.category-card:hover {
+.category-item:hover {
   transform: translateY(-5px);
 }
 
 /* Image group */
-.image-group {
+.category-image-group {
   position: relative;
   width: 100%;
-  aspect-ratio: 3 / 4; /* fixed ratio like deals section */
+  aspect-ratio: 3 / 4;
   overflow: hidden;
   border-radius: 12px;
 }
 
-.category-img {
+.category-photo {
   width: 100%;
   height: 100%;
   object-fit: cover;
   transition: transform 0.4s ease;
 }
 
-.category-card:hover .category-img {
+.category-item:hover .category-photo {
   transform: scale(1.1);
 }
 
@@ -73,7 +73,7 @@
   text-align: center;
 }
 
-.category-title {
+.category-name {
   font-size: 18px;
   font-weight: 600;
   color: #fff;
@@ -81,12 +81,13 @@
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
+
 /* Wrapper for slider + buttons */
 .slider-wrapper {
   position: relative;
 }
 
-/* Slider Buttons */
+/* Slider Buttons (unchanged as per your request) */
 .slider-btn {
   position: absolute;
   bottom: -30px;
@@ -98,7 +99,7 @@
   height: 36px;
   border-radius: 5px;
   cursor: pointer;
-  display: none; /* default hidden */
+  display: none;
   align-items: center;
   justify-content: center;
   z-index: 10;
@@ -109,7 +110,6 @@
   background: rgba(133, 133, 133, 0.871);
 }
 
-/* Position left/right */
 .slider-btn.left {
   left: 50%;
   transform: translateX(-60px);
@@ -129,19 +129,19 @@
 
 /* Responsive */
 @media (max-width: 992px) {
-  .categories-grid {
+  .category-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 600px) {
-  .categories-heading {
+  .category-heading {
     text-align: center;
     font-size: 22px;
   }
 
   /* Mobile slider like Deals section */
-  .categories-grid {
+  .category-grid {
     display: flex;
     overflow-x: auto;
     gap: 1rem;
@@ -149,18 +149,18 @@
     padding-bottom: 1rem;
   }
 
-  .categories-grid::-webkit-scrollbar {
+  .category-grid::-webkit-scrollbar {
     display: none;
   }
 
-  .category-card {
+  .category-item {
     flex: 0 0 auto;
-    width: 150px; /* fixed width like deals cards */
+    width: 150px;
     scroll-snap-align: start;
   }
 
-  .image-group {
+  .category-image-group {
     width: 100%;
-    aspect-ratio: 3 / 4; /* maintain card ratio */
+    aspect-ratio: 3 / 4;
   }
 }

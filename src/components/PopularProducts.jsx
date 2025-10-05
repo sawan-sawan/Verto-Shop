@@ -26,21 +26,21 @@ const products = [
 
 export default function PopularProducts() {
   return (
-    <section className="trend-section" id="popular-products">
-      <div className="container">
+    <section className="popular-section" id="popular-products">
+      <div className="popular-container">
         {/* Heading */}
-        <h2 className="trend-heading">THE TREND REPORT</h2>
+        <h2 className="popular-heading">THE TREND REPORT</h2>
 
         {/* Trend Cards */}
-        <div className="trend-grid">
+        <div className="popular-grid">
           {products.map((product) => (
-            <div key={product.id} className="trend-card">
+            <div key={product.id} className="popular-card">
               <img
                 src={product.image}
                 alt={product.title}
-                className="trend-img"
+                className="popular-img"
               />
-              <p className="trend-title">{product.title}</p>
+              <p className="popular-title">{product.title}</p>
             </div>
           ))}
         </div>

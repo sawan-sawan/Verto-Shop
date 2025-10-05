@@ -231,6 +231,20 @@
 .logout-btn:hover {
   background-color: #fecaca;
 }
+.profile-letter {
+  width: 128px;
+  height: 128px;
+  background-color: #ff7b00;
+  color: #fff;
+  font-size: 48px;
+  font-weight: 700;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
 
 /* Responsive Design */
 @media (min-width: 640px) {

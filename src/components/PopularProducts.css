@@ -1,19 +1,19 @@
 /* Section */
-.trend-section {
+.popular-section {
   width: 100%;
   padding: 60px 20px;
   background: #fff;
 }
 
 /* Container */
-.container {
+.popular-container {
   padding: 10px;
-  max-width: 1900px;
+  max-width: 1700px;
   margin: 0 auto;
 }
 
 /* Heading */
-.trend-heading {
+.popular-heading {
   padding-top: 23px;
   text-align: left;
   font-size: 32px;
@@ -25,7 +25,7 @@
 }
 
 /* Grid */
-.trend-grid {
+.popular-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 25px;
@@ -33,64 +33,63 @@
 }
 
 /* Card */
-.trend-card {
-  text-align: left; /* align left instead of center */
+.popular-card {
+  text-align: left;
   cursor: pointer;
   transition: transform 0.3s ease;
 }
 
-.trend-card:hover {
+.popular-card:hover {
   transform: translateY(-3px);
 }
 
 /* Image */
-.trend-img {
+.popular-img {
   width: 100%;
   height: auto;
-  aspect-ratio: 3 / 4;   /* keeps same FashionNova proportion */
+  aspect-ratio: 3 / 4;
   object-fit: cover;
-  border-radius: 0;      /* no rounding, FashionNova is sharp */
+  border-radius: 0;
   display: block;
 }
 
 /* Title */
-.trend-title {
+.popular-title {
   margin-top: 12px;
   font-size: 14px;
   font-weight: 500;
   color: #000;
-  text-decoration: underline;
-  text-align: left;
   text-decoration: none;
+  text-align: left;
 }
 
 /* Responsive */
 @media (max-width: 1200px) {
-  .container {
+  .popular-container {
     max-width: 95%;
     padding: 0px;
   }
 }
 
 @media (max-width: 992px) {
-  .trend-grid {
+  .popular-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
 }
 
 @media (max-width: 600px) {
-  .trend-grid {
+  .popular-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
 
-  .trend-heading {
+  .popular-heading {
     font-size: 22px;
     text-align: center;
   }
 
-  .trend-img {
+  .popular-img {
     aspect-ratio: 3 / 4;
   }
 }

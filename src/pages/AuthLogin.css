@@ -63,6 +63,14 @@
   line-height: 1.6;
   opacity: 0.85;
 }
+.auth-orange {
+  color: #ff6825;
+}
+
+.auth-black {
+  color: #000;
+}
+
 
 /* Right Side */
 .loginlogo{

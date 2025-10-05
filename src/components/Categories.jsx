@@ -20,18 +20,18 @@ export default function Categories() {
   };
 
   return (
-    <section className="categories-section" id="categories">
-      <div className="container">
-        <h2 className="categories-heading">SHOP BY CATEGORY</h2>
+    <section className="category-section" id="categories">
+      <div className="category-container">
+        <h2 className="category-heading">SHOP BY CATEGORY</h2>
 
         <div className="slider-wrapper">
-          <div className="categories-grid" ref={sliderRef}>
+          <div className="category-grid" ref={sliderRef}>
             {categories.map((cat) => (
-              <div key={cat.id} className="category-card">
-                <div className="image-group">
-                  <img src={cat.image} alt={cat.title} className="category-img" />
+              <div key={cat.id} className="category-item">
+                <div className="category-image-group">
+                  <img src={cat.image} alt={cat.title} className="category-photo" />
                   <div className="category-overlay">
-                    <p className="category-title">{cat.title}</p>
+                    <p className="category-name">{cat.title}</p>
                   </div>
                 </div>
               </div>
