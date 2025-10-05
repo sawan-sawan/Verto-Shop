@@ -66,10 +66,10 @@ const Navbar = ({ cartItemCount }) => {
 
           {/* Actions */}
           <div className="actions">
-            <Link to="/login" className="icon-btnn">
+            <Link to="/login" className="icon-btn">
               <User size={22} />
             </Link>
-            <button className="icon-btn">
+            <button className="icon-btnn">
               <Heart size={22} />
               {isWishlistActive && <span className="wishlist-dot"></span>}
             </button>
