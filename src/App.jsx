@@ -23,6 +23,7 @@ import Footer from "./components/Footer";
 import Features from "./components/Features";
 import GlobalLoader from "./components/GlobalLoader";
 import GlobalNotification from './components/GlobalNotification';
+import TextWithCardSlider from "./components/TextWithCardSlider";
 // Pages
 import WorkspaceSale from "./pages/WorkpaceSale";
 import CartPage from "./pages/CartPage";
@@ -199,7 +200,7 @@ function App() {
       ) : (
         <>
           <Routes>
-            <Route path="/" element={<> <Hero /> <PopularProducts /> <Categories /> <NewArrival /> <DealsSection /> <OfferBanner /> <Features /> <Contact /> </>} />
+            <Route path="/" element={<> <Hero /> <PopularProducts /> <Categories /> <NewArrival /> <DealsSection /> <OfferBanner /> <Features /> <TextWithCardSlider /> <Contact /> </>} />
             <Route path="/men" element={<WorkspaceSale defaultCollection="men" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} />} />
             <Route path="/women" element={<WorkspaceSale defaultCollection="women" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} />} />
             <Route path="/cart" element={<CartPage cartItems={cartItems} onUpdateQuantity={handleUpdateQuantity} />} />

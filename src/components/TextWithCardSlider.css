@@ -1,0 +1,156 @@
+/* ===============================
+   Base Layout
+================================*/
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  gap: 5.5rem;
+  max-width: 1700px;
+  margin: 0 auto;
+}
+
+/* ===============================
+   Left Side Content
+================================*/
+.left-content {
+  flex: 1;
+  text-align: center;
+  max-width: 500px;
+}
+
+.left-content h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.left-content p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #4b5563;
+}
+
+.left-content button {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  background: #ff6825;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.left-content button:hover {
+  background: #ff9767ff;
+  transform: translateY(-2px);
+}
+
+/* ===============================
+   Right Side Carousel
+================================*/
+.carousel-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 700px;
+  row-gap: 1rem;
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 220px;
+}
+
+.card {
+  position: absolute;
+  width: 10rem;
+  height: 23rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  border: 3px solid #fff;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-size: cover;
+  background-position: center;
+}
+
+/* ===============================
+   Controls
+================================*/
+.controls {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.controls button {
+  border-radius: 50%;
+  height: 2.5rem;
+  width: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  cursor: pointer;
+  color: #374151;
+  transition: all 0.2s;
+}
+
+.controls button:hover {
+  background-color: #e5e7eb;
+}
+
+.controls svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* ===============================
+   Responsive Design (Media Queries)
+================================*/
+
+/* Tablet (≥768px) */
+@media (max-width: 768px) {
+
+  .carousel-wrapper{
+    row-gap: 4rem;
+  }
+}
+@media (min-width: 768px) {
+  .carousel-container {
+    min-height: 320px;
+  }
+
+  .card {
+    width: 14rem;
+    height: 23rem;
+  }
+}
+
+/* Desktop (≥1024px) */
+@media (min-width: 1024px) {
+  .section {
+    flex-direction: row;
+    justify-content: center;
+    padding: 5rem;
+  }
+
+  .left-content {
+    text-align: left;
+  }
+
+  .card {
+    width: 16rem;
+    height: 23rem;
+  }
+}
