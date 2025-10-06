@@ -172,7 +172,40 @@
   font-weight: bold;
   text-decoration: none;
 }
+/* --- NEW: Styles for the Success Notification Popup --- */
 
+/* Keyframes for the fade-in and fade-out animation */
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  10%, 90% {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+}
+
+/* The notification popup style */
+.auth-notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #28a745; /* Success Green */
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-size: 1rem;
+  font-weight: 500;
+  animation: fadeInOut 3s ease-in-out forwards;
+}
 /* ==================== Responsive ==================== */
 
 /* Tablets (<= 992px) */

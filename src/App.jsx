@@ -1,10 +1,11 @@
-// App.jsx (FINAL FIXED)
+// App.jsx (FINAL CORRECTED CODE)
 import React, { useState, useEffect, useCallback } from "react";
 import Lenis from "@studio-freight/lenis";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import { auth, db } from "./firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+// ✅ Step 1: `updateProfile` import karein
+import { onAuthStateChanged, signOut, updateProfile } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
 import "./App.css";
@@ -21,7 +22,7 @@ import OfferBanner from "./components/OfferBanner";
 import Footer from "./components/Footer";
 import Features from "./components/Features";
 import GlobalLoader from "./components/GlobalLoader";
-
+import GlobalNotification from './components/GlobalNotification';
 // Pages
 import WorkspaceSale from "./pages/WorkpaceSale";
 import CartPage from "./pages/CartPage";
@@ -34,8 +35,6 @@ function App() {
   const [cartItems, setCartItems] = useState([]);
   const [justAddedProductId, setJustAddedProductId] = useState(null);
   const [initialCartLoaded, setInitialCartLoaded] = useState(false);
-
-  // 🧠 NEW: userProfileData for name/avatar
   const [userProfile, setUserProfile] = useState(null);
 
   // === Load Cart from Firestore ===
@@ -65,12 +64,12 @@ function App() {
       if (profileSnap.exists()) {
         setUserProfile(profileSnap.data());
       } else {
-        // Default profile create if not exists
         await setDoc(profileRef, {
           displayName: "Guest User",
+          bio: "", // Bio ko shuru mein khaali rakhein
           createdAt: new Date(),
         });
-        setUserProfile({ displayName: "Guest User" });
+        setUserProfile({ displayName: "Guest User", bio: "" });
       }
     } catch (error) {
       console.error("Error loading user profile:", error);
@@ -144,6 +143,37 @@ function App() {
     signOut(auth).catch((error) => console.error("Logout Error:", error));
   };
 
+  // ✅ Step 2: Profile Update function banayein
+  const handleProfileUpdate = async (updatedData) => {
+    if (!currentUser) return;
+
+    const { fullName, bio } = updatedData;
+    const userRef = doc(db, "users", currentUser.uid);
+
+    try {
+      // Firebase Auth (ID Card) update karein
+      await updateProfile(currentUser, {
+        displayName: fullName,
+      });
+
+      // Firestore Database (Personal File) update karein
+      await setDoc(userRef, {
+        displayName: fullName,
+        bio: bio
+      }, { merge: true });
+
+      // Local state update karein
+      setUserProfile(prevProfile => ({ ...prevProfile, displayName: fullName, bio: bio }));
+
+      // Success message dikhayein
+      sessionStorage.setItem('successMessage', 'Profile updated successfully!');
+
+    } catch (error) {
+      console.error("Error updating profile: ", error);
+      alert("Error updating profile.");
+    }
+  };
+
   // === Smooth Scroll (Lenis) ===
   useEffect(() => {
     const lenis = new Lenis({
@@ -159,9 +189,9 @@ function App() {
     requestAnimationFrame(raf);
   }, []);
 
-  // === Render ===
   return (
     <Router>
+      <GlobalNotification />
       <Navbar cartItemCount={cartItemCount} user={currentUser} handleLogout={handleLogout} />
 
       {loadingAuth ? (
@@ -169,55 +199,14 @@ function App() {
       ) : (
         <>
           <Routes>
-            {/* Home Page */}
-            <Route
-              path="/"
-              element={
-                <>
-                  <Hero />
-                  <PopularProducts />
-                  <Categories />
-                  <NewArrival />
-                  <DealsSection />
-                  <OfferBanner />
-                  <Features />
-                  <Contact />
-                </>
-              }
-            />
-
-            {/* Product Pages */}
-            <Route
-              path="/men"
-              element={
-                <GlobalLoader>
-                  <WorkspaceSale
-                    defaultCollection="men"
-                    onAddToCart={handleAddToCart}
-                    justAddedProductId={justAddedProductId}
-                    currentUser={currentUser}
-                  />
-                </GlobalLoader>
-              }
-            />
-            <Route
-              path="/women"
-              element={
-                <GlobalLoader>
-                  <WorkspaceSale
-                    defaultCollection="women"
-                    onAddToCart={handleAddToCart}
-                    justAddedProductId={justAddedProductId}
-                    currentUser={currentUser}
-                  />
-                </GlobalLoader>
-              }
-            />
+            <Route path="/" element={<> <Hero /> <PopularProducts /> <Categories /> <NewArrival /> <DealsSection /> <OfferBanner /> <Features /> <Contact /> </>} />
+            <Route path="/men" element={<WorkspaceSale defaultCollection="men" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} />} />
+            <Route path="/women" element={<WorkspaceSale defaultCollection="women" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} />} />
             <Route path="/cart" element={<CartPage cartItems={cartItems} onUpdateQuantity={handleUpdateQuantity} />} />
             <Route path="/contact" element={<Contact />} />
-
-            {/* Auth Routes */}
             <Route path="/login" element={currentUser ? <Navigate to="/profile" /> : <LoginPage />} />
+            
+            {/* ✅ Step 3: ProfilePage ko naya function pass karein */}
             <Route
               path="/profile"
               element={
@@ -226,6 +215,7 @@ function App() {
                     user={currentUser}
                     userProfile={userProfile}
                     handleLogout={handleLogout}
+                    onProfileUpdate={handleProfileUpdate} // Yahan pass karein
                   />
                 ) : (
                   <Navigate to="/login" />

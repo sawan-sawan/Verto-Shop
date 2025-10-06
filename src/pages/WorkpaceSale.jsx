@@ -22,9 +22,17 @@ const MinusIcon = () => (
     </svg>
 );
 
-const CloseIcon = () => (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+const CloseIcon = ({ width = 18, height = 18 }) => (
+    <svg width={width} height={height} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+);
+
+// --- NEW --- SVG illustration for the login popup
+const LoginIllustrationIcon = () => (
+    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <path fill="#FFD6A5" d="M37.5,-59.5C51.1,-55.8,66.5,-49.2,74.9,-37.9C83.3,-26.6,84.7,-10.6,79.9,3.5C75.2,17.7,64.2,29.9,53.4,39.6C42.6,49.2,32,56.3,20.1,62.2C8.2,68.1,-5,72.9,-18.2,71.2C-31.4,69.5,-44.6,61.4,-55.6,50.7C-66.6,40,-75.4,26.7,-79.1,12.2C-82.9,-2.3,-81.6,-18,-74.6,-31C-67.6,-44,-54.9,-54.3,-41.6,-59.2C-28.3,-64.2,-14.1,-63.9,-0.4,-63.4C13.4,-62.9,26.8,-62.3,37.5,-59.5Z" transform="translate(100 100)" />
+        <text x="50%" y="55%" dominantBaseline="middle" textAnchor="middle" fontSize="90" fill="#FFF" fontFamily="Arial, sans-serif">🛍️</text>
     </svg>
 );
 
@@ -48,7 +56,6 @@ const Grid2Icon = () => (
 
 // --- Combined and Augmented Product Data ---
 const allProducts = [
-  // Men Products from original list
   { id: 1, name: "Allied Down Hooded Blouson", price: 530, images: ["/img/dimg1.webp", "/img/dimg11.webp"], inStock: true, color: "Black" },
   { id: 2, name: "1Tuck Tapered Pants", price: 205, images: ["/img/dimg2.webp", "/img/nimg4.jpg"], inStock: true, color: "Beige" },
   { id: 3, name: "Alex Merino Wool Open Placket Polo", price: 305, images: ["/img/dimg3.webp", "/img/dimg33.webp"], inStock: false, color: "White" },
@@ -57,7 +64,6 @@ const allProducts = [
   { id: 6, name: "Boa Fleece Zip Blouson", price: 212, images: ["/img/wimg3.jpg", "/img/wimg4.jpg"], inStock: false, color: "Blue" },
   { id: 7, name: "Broome Flannel Long Sleeve Shirt", price: 177, images: ["/img/wimg5.jpg", "/img/wimg6.jpg"], inStock: true, color: "Brown" },
   { id: 8, name: "Chambray Work Shirt", price: 198, images: ["/img/wimg7.jpg", "/img/wimg1.jpg"], inStock: true, color: "Blue" },
-  // Women Products from original list (assuming these are unisex for this example)
   { id: 9, name: "Ditch International Hoodie", price: 121, images: ["/img/wimg5.jpg", "/img/wimg5.jpg"], inStock: true, color: "Yellow" },
   { id: 10, name: "Coverall Wool Shirts Blouson", price: 283, images: ["/img/wimg6.jpg", "/img/wimg6.jpg"], inStock: false, color: "Gray" },
   { id: 11, name: "Cotton Cashmere Strip Dyeing Knit", price: 212, images: ["/img/wimg7.jpg", "/img/wimg7.jpg"], inStock: true, color: "Multi" },
@@ -81,11 +87,9 @@ const ProductPopup = ({ product, onClose, onConfirmAddToCart }) => {
     const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
 
     const handleAddToCartClick = () => {
-        // Pass the selected details to the parent
         onConfirmAddToCart({ size: selectedSize, quantity });
     };
     
-    // Prevent clicks inside the popup from closing it
     const handlePopupContentClick = (e) => {
         e.stopPropagation();
     };
@@ -135,6 +139,31 @@ const ProductPopup = ({ product, onClose, onConfirmAddToCart }) => {
     );
 };
 
+// --- NEW LOGIN REQUIRED POPUP COMPONENT ---
+const LoginRequiredPopup = ({ onClose, onNavigate }) => {
+    const handlePopupContentClick = (e) => e.stopPropagation();
+
+    return (
+        <div className="login-popup-overlay" onClick={onClose}>
+            <div className="login-popup-content" onClick={handlePopupContentClick}>
+                <button className="login-popup-close-btn" onClick={onClose}>
+                    <CloseIcon width={22} height={22} />
+                </button>
+                <div className="login-popup-image-container">
+                    <LoginIllustrationIcon />
+                </div>
+                <div className="login-popup-details">
+                    <h2>Please Login or Sign Up</h2>
+                    <p>You need to log in or create an account before adding items to your cart.</p>
+                    <button className="login-popup-navigate-btn" onClick={onNavigate}>
+                        Go to Login / Sign Up
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+};
+
 
 // --- Main Component ---
 const WorkspaceSale = ({ onAddToCart, currentUser, justAddedProductId }) => {
@@ -150,6 +179,8 @@ const WorkspaceSale = ({ onAddToCart, currentUser, justAddedProductId }) => {
   });
   
   const [popupProduct, setPopupProduct] = useState(null);
+  // --- NEW STATE FOR LOGIN POPUP ---
+  const [showLoginPopup, setShowLoginPopup] = useState(false);
 
   const filterRef = useRef(null);
   const navigate = useNavigate();
@@ -223,20 +254,18 @@ const WorkspaceSale = ({ onAddToCart, currentUser, justAddedProductId }) => {
     setOpenFilter(openFilter === filterName ? null : filterName);
   };
 
-  // --- NEW POPUP AND CART LOGIC ---
+  // --- UPDATED POPUP AND CART LOGIC ---
   const handleOpenPopup = (product) => {
-    // Sabse pehle authentication check karein
+    // Check for authentication first
     if (!currentUser) {
-      alert("Please login or create an account to add items to your cart.");
-      navigate('/login');
-      return; // Function ko yahin rok dein
+      setShowLoginPopup(true); // Show the new login modal instead of alert
+      return; // Stop the function here
     }
 
-    // Agar user logged in hai, to aage ka kaam karein
+    // If the user is logged in, proceed with the existing logic
     if (window.innerWidth > 768) {
         setPopupProduct(product);
     } else {
-        // On mobile, add to cart directly with default values for a better UX
         onAddToCart(product, { size: 'M', quantity: 1 });
     }
   };
@@ -248,10 +277,14 @@ const WorkspaceSale = ({ onAddToCart, currentUser, justAddedProductId }) => {
   const handleConfirmAddToCart = (details) => {
     onAddToCart(popupProduct, details);
     
-    // Close popup automatically after adding
     setTimeout(() => {
         handleClosePopup();
-    }, 500); // Small delay to allow user to see confirmation if any
+    }, 500); 
+  };
+  
+  const handleNavigateToLogin = () => {
+      setShowLoginPopup(false);
+      navigate('/login');
   };
 
 
@@ -368,12 +401,20 @@ const WorkspaceSale = ({ onAddToCart, currentUser, justAddedProductId }) => {
         ))}
       </div>
       
-      {/* --- Render the Popup Conditionally --- */}
+      {/* --- Render the Product Popup Conditionally --- */}
       {popupProduct && (
         <ProductPopup 
           product={popupProduct}
           onClose={handleClosePopup}
           onConfirmAddToCart={handleConfirmAddToCart}
+        />
+      )}
+
+      {/* --- NEW: Render the Login Required Popup Conditionally --- */}
+      {showLoginPopup && (
+        <LoginRequiredPopup 
+            onClose={() => setShowLoginPopup(false)}
+            onNavigate={handleNavigateToLogin}
         />
       )}
     </div>

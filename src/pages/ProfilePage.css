@@ -245,7 +245,108 @@
   user-select: none;
 }
 
+/* --- NEW STYLES FOR LOGOUT CONFIRMATION POPUP --- */
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.logout-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.logout-popup-content {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  position: relative;
+  animation: scaleUp 0.3s ease-out;
+}
+
+.logout-popup-content h2 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-size: 1.5rem;
+}
+
+.logout-popup-content p {
+  margin-bottom: 1.5rem;
+  color: #666;
+  font-size: 1rem;
+}
+
+.logout-popup-close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #aaa;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.logout-popup-close-btn:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.logout-popup-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.logout-popup-actions button {
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.logout-btn-cancel {
+  background-color: #e2e8f0;
+  color: #4a5568;
+}
+
+.logout-btn-cancel:hover {
+  background-color: #cbd5e0;
+}
+
+.logout-btn-confirm {
+  background-color: #e53e3e; /* Red */
+  color: #fff;
+}
+
+.logout-btn-confirm:hover {
+  background-color: #c53030;
+}
 /* Responsive Design */
 @media (min-width: 640px) {
   .profile-page-container {

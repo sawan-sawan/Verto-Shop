@@ -628,3 +628,144 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helve
   box-shadow: 0 0 10px rgba(255, 104, 37, 0.5);
   border-radius: 8px; /* Optional: to make border look good */
 }
+/* --- NEW STYLES FOR LOGIN REQUIRED POPUP --- */
+
+/* Keyframes for fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Overlay for the popup */
+.login-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1001; /* Higher than other content */
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Main popup content card */
+.login-popup-content {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  display: flex;
+  width: 90%;
+  max-width: 650px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Close (X) button */
+.login-popup-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  color: #888;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.login-popup-close-btn:hover {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+/* Left side - Image container */
+.login-popup-image-container {
+  flex-basis: 40%;
+  background-color: #fff8f0; /* Light accent color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.login-popup-image-container svg {
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+}
+
+/* Right side - Details container */
+.login-popup-details {
+  flex-basis: 60%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.login-popup-details h2 {
+  font-size: 24px;
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #222;
+}
+
+.login-popup-details p {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* "Go to Login" button */
+.login-popup-navigate-btn {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.login-popup-navigate-btn:hover {
+  background-color: #333;
+  transform: translateY(-2px);
+}
+
+/* --- RESPONSIVE DESIGN FOR MOBILE --- */
+@media (max-width: 768px) {
+  .login-popup-content {
+    flex-direction: column;
+    max-width: 350px;
+  }
+
+  .login-popup-image-container {
+    padding: 30px 20px;
+    min-height: 180px;
+  }
+  
+  .login-popup-details {
+    padding: 24px;
+    text-align: center;
+  }
+
+  .login-popup-details h2 {
+    font-size: 20px;
+  }
+
+  .login-popup-details p {
+    font-size: 14px;
+  }
+}
