@@ -105,7 +105,7 @@ const CartPage = ({ cartItems, onUpdateQuantity }) => {
             </div>
             <div className="form-group-inline">
               <div className="form-group">
-                <select><option>State / City</option><option>New York</option></select>
+                <select><option> State / City </option><option> New York </option></select>
                 <ChevronDown />
               </div>
               <div className="form-group">
