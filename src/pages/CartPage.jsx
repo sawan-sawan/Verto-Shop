@@ -75,7 +75,7 @@ const CartPage = ({ cartItems, onUpdateQuantity }) => {
                 <div className="cart-item-details">
                   <span className="item-category">{item.category || 'WOMEN'}</span>
                   <span className="item-name">{item.name}</span>
-                  <span className="item-attrs">Color: {item.color} &bull; Size: {item.size}</span>
+                  <span className="item-size">Size: {item.size}</span>
                 </div>
               </div>
               <div className="cart-item-price">

@@ -202,7 +202,7 @@ function App() {
           <Routes>
             <Route path="/" element={<> <Hero /> <PopularProducts /> <Categories /> <NewArrival /> <DealsSection /> <OfferBanner /> <Features /> <TextWithCardSlider /> <Contact /> </>} />
             <Route path="/men" element={<WorkspaceSale defaultCollection="men" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} />} />
-            <Route path="/women" element={<WorkspaceSale defaultCollection="women" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} />} />
+            <Route path="/women" element={<WorkspaceSale defaultCollection="Women" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} />} />
             <Route path="/cart" element={<CartPage cartItems={cartItems} onUpdateQuantity={handleUpdateQuantity} />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={currentUser ? <Navigate to="/profile" /> : <LoginPage />} />
