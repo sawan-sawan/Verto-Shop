@@ -58,28 +58,18 @@ const Grid2Icon = () => (
 const allProducts = [
   { id: 1, name: "Allied Down Hooded Blouson", price: 530, images: ["/img/dimg1.webp", "/img/dimg11.webp"], inStock: true, color: "Black", category: "Shoes" },
   { id: 2, name: "1Tuck Tapered Pants", price: 205, images: ["/img/dimg2.webp", "/img/nimg4.jpg"], inStock: true, color: "Beige", category: "Men jecket" },
-  { id: 3, name: "Alex Merino Wool Open Placket Polo", price: 305, images: ["/img/dimg3.webp", "/img/dimg33.webp"], inStock: false, color: "White", category: "Men jecket" },
-  { id: 4, name: "Bowery Miller Standard Crew", price: 121, images: ["/img/dimg4.webp", "/img/dimg44.webp"], inStock: true, color: "Green", category: "T-Shirts" },
+  { id: 3, name: "Alex Merino Wool Open Placket Polo", price: 305, images: ["/img/dimg3.webp", "/img/dimg33.webp"], inStock: false, color: "White", category: "Sunglasses" },
+  { id: 4, name: "Bowery Miller Standard Crew", price: 121, images: ["/img/dimg4.webp", "/img/dimg44.webp"], inStock: true, color: "Green", category: "Belt" },
   { id: 5, name: "Bowery The Big Apple Crew", price: 121, images: ["/img/wimg1.jpg", "/img/wimg2.jpg"], inStock: true, color: "Black", category: "Women Clothes" },
   { id: 6, name: "Boa Fleece Zip Blouson", price: 212, images: ["/img/wimg3.jpg", "/img/wimg4.jpg"], inStock: false, color: "Blue", category: "Women Clothes" },
   { id: 7, name: "Broome Flannel Long Sleeve Shirt", price: 177, images: ["/img/wimg5.jpg", "/img/wimg6.jpg"], inStock: true, color: "Brown", category: "Women Clothes" },
   { id: 8, name: "Chambray Work Shirt", price: 198, images: ["/img/wimg7.jpg", "/img/wimg1.jpg"], inStock: true, color: "Blue", category: "Women Clothes" },
-  { id: 9, name: "Ditch International Hoodie", price: 121, images: ["/img/wimg5.jpg", "/img/wimg5.jpg"], inStock: true, color: "Yellow", category: "T-Shirts" },
-  { id: 10, name: "Coverall Wool Shirts Blouson", price: 283, images: ["/img/wimg6.jpg", "/img/wimg6.jpg"], inStock: false, color: "Gray", category: "Belt" },
-  { id: 11, name: "Cotton Cashmere Strip Dyeing Knit", price: 212, images: ["/img/wimg7.jpg", "/img/wimg7.jpg"], inStock: true, color: "Multi", category: "Women Clothes" },
-  { id: 12, name: "Daikanyama Gabardine Coat", price: 488, images: ["/img/wimg1.jpg", "/img/wimg1.jpg"], inStock: true, color: "Beige", category: "Women Clothes" },
   { id: 13, name: "Baggy Cargo Sweatpants - Black", price: 34.99, images: ["/img/fimg1.webp", "/img/fimg1.webp"], inStock: true, color: "Beige", category: "Fleece" },
   { id: 15, name: "Oversized Crewneck - Black", price: 34.99, images: ["/img/fimg5.jpg", "/img/fimg5.jpg"], inStock: true, color: "White", category: "Fleece" },
   { id: 16, name: "Oversized Crewneck - Black", price: 34.99, images: ["/img/fimg6.jpg", "/img/fimg6.jpg"], inStock: true, color: "Beige", category: "Fleece" },
-  { id: 17, name: "Oversized Crewneck - Black", price: 39, images: ["/img/fimg7.jpg", "/img/fimg7.jpg"], inStock: true, color: "Beige", category: "Fleece" },
-  { id: 18, name: "Oversized Crewneck - Black", price: 34.99, images: ["/img/fimg8.jpg", "/img/fimg8.jpg"], inStock: true, color: "Beige", category: "Fleece" },
-  { id: 19, name: "Oversized Crewneck - Black", price: 39, images: ["/img/fimg9.jpg", "/img/fimg9.jpg"], inStock: true, color: "Beige", category: "Fleece" },
-  { id: 20, name: "Oversized Crewneck - Black", price: 34.99, images: ["/img/fimg10.jpg", "/img/fimg10.jpg"], inStock: true, color: "Beige", category: "Fleece" },
-  { id: 21, name: "Oversized Crewneck - Black", price: 34.99, images: ["/img/fimg11.jpg", "/img/fimg11.jpg"], inStock: true, color: "Beige", category: "Fleece" },
-  { id: 22, name: "Oversized Crewneck - Black", price: 39, images: ["/img/fimg12.jpg", "/img/fimg12.jpg"], inStock: true, color: "Beige", category: "Fleece" },
-  { id: 23, name: "Oversized Crewneck - Black", price: 34.99, images: ["/img/fimg13.jpg", "/img/fimg13.jpg"], inStock: true, color: "Beige", category: "Fleece" },
-  { id: 24, name: "Oversized Crewneck - Black", price: 34.99, images: ["/img/fimg14.jpg", "/img/fimg14.jpg"], inStock: true, color: "Beige", category: "Fleece" },
-
+  { id: 17, name: "Oversized Crewneck - Black", price: 39, images: ["/img/fimg12.jpg", "/img/fimg12.jpg"], inStock: true, color: "Beige", category: "Fleece" },
+  { id: 18, name: "Oversized Crewneck - Black", price: 34.99, images: ["/img/fimg13.jpg", "/img/fimg13.jpg"], inStock: true, color: "Beige", category: "Fleece" },
+  { id: 19, name: "Oversized Crewneck - Black", price: 34.99, images: ["/img/fimg14.jpg", "/img/fimg14.jpg"], inStock: true, color: "Beige", category: "Fleece" },
 ];
 
 const availabilityOptions = ["In stock", "Out of stock"];
@@ -182,6 +172,19 @@ const LoginRequiredPopup = ({ onClose, onNavigate }) => {
 const WorkspaceSale = ({ onAddToCart, currentUser, justAddedProductId, selectedCategory }) => {
   useScrollToTop();
 
+  // ✅ Step 1: Create a shuffled version of the products array, only once on component load.
+  const shuffledProducts = useMemo(() => {
+    const productsCopy = [...allProducts]; // Create a copy to avoid mutating the original array
+    
+    // Fisher-Yates shuffle algorithm to randomize the array order
+    for (let i = productsCopy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [productsCopy[i], productsCopy[j]] = [productsCopy[j], productsCopy[i]];
+    }
+    
+    return productsCopy;
+  }, []); // The empty dependency array `[]` ensures this runs only once.
+
   const [products, setProducts] = useState([]);
   const [openFilter, setOpenFilter] = useState(null);
   const [gridLayout, setGridLayout] = useState("grid-5-cols");
@@ -190,7 +193,7 @@ const WorkspaceSale = ({ onAddToCart, currentUser, justAddedProductId, selectedC
   const [activeFilters, setActiveFilters] = useState({
     availability: [],
     color: [],
-    category: [], // This will now act as the sub-category filter
+    category: [],
   });
   
   const [popupProduct, setPopupProduct] = useState(null);
@@ -199,21 +202,16 @@ const WorkspaceSale = ({ onAddToCart, currentUser, justAddedProductId, selectedC
   const filterRef = useRef(null);
   const navigate = useNavigate();
 
-  // --- ENHANCED LOGIC: Filter products based on the selectedCategory prop ---
+  // ✅ Step 2: Use the new `shuffledProducts` array instead of `allProducts`.
   const baseProducts = useMemo(() => {
     if (!selectedCategory || selectedCategory === "All") {
-      return allProducts;
+      return shuffledProducts; // Use the shuffled array
     }
     // This allows the prop to be a direct category name like "Men Clothes"
-    return allProducts.filter(p => p.category === selectedCategory);
-  }, [selectedCategory]);
+    return shuffledProducts.filter(p => p.category === selectedCategory); // Use the shuffled array here too
+  }, [selectedCategory, shuffledProducts]);
 
-  // --- ENHANCED LOGIC: Dynamically generate sub-category options ---
   const subCategoryOptions = useMemo(() => {
-    // In this specific implementation, sub-categories are not hierarchical.
-    // If a main category is selected, the sub-category filter is not needed.
-    // However, if the main category was broader (e.g., "Apparel"), this would be useful.
-    // For now, we return a unique list from the base products.
     const categories = baseProducts.map(p => p.category);
     return [...new Set(categories)];
   }, [baseProducts]);
@@ -228,20 +226,14 @@ const WorkspaceSale = ({ onAddToCart, currentUser, justAddedProductId, selectedC
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // --- ENHANCED LOGIC: Reset sub-category filters when main category changes ---
   useEffect(() => {
-    // This ensures that old sub-category selections are cleared when you navigate
-    // to a new main category page.
     setActiveFilters(prev => ({ ...prev, category: [] }));
   }, [selectedCategory]);
 
 
-  // --- ENHANCED LOGIC: Combined filtering and sorting effect ---
   useEffect(() => {
-    // Start with the products pre-filtered by the `selectedCategory` prop
     let filtered = [...baseProducts];
 
-    // 1. Apply Availability Filter
     if (activeFilters.availability.length > 0) {
       filtered = filtered.filter(p => {
         const isInStock = activeFilters.availability.includes("In stock") && p.inStock;
@@ -250,18 +242,14 @@ const WorkspaceSale = ({ onAddToCart, currentUser, justAddedProductId, selectedC
       });
     }
 
-    // 2. Apply Color Filter
     if (activeFilters.color.length > 0) {
       filtered = filtered.filter(p => activeFilters.color.includes(p.color));
     }
 
-    // 3. Apply Sub-Category Filter
     if (activeFilters.category.length > 0) {
-      // This filters the `baseProducts` list further by the selected sub-categories.
       filtered = filtered.filter(p => activeFilters.category.includes(p.category));
     }
     
-    // 4. Apply Sorting
     switch (sortBy) {
         case 'price-asc':
             filtered.sort((a, b) => a.price - b.price);
@@ -283,7 +271,6 @@ const WorkspaceSale = ({ onAddToCart, currentUser, justAddedProductId, selectedC
     setProducts(filtered);
   }, [baseProducts, activeFilters, sortBy]);
 
-  // --- Handlers (with useCallback for stability) ---
   const handleFilterChange = (type, value) => {
     setActiveFilters(prev => {
         const currentValues = prev[type];
@@ -311,7 +298,6 @@ const WorkspaceSale = ({ onAddToCart, currentUser, justAddedProductId, selectedC
     setOpenFilter(openFilter === filterName ? null : filterName);
   };
 
-  // --- Popup and Cart Logic (Unchanged) ---
   const handleOpenPopup = (product) => {
     if (!currentUser) {
       setShowLoginPopup(true);
@@ -401,9 +387,6 @@ const WorkspaceSale = ({ onAddToCart, currentUser, justAddedProductId, selectedC
             )}
           </div>
 
-          {/* --- SUB-CATEGORY FILTER DROPDOWN --- */}
-          {/* This dropdown is most useful when the selectedCategory is broad. */}
-          {/* We disable it if there's only one sub-category option to avoid confusion. */}
           <div className="filter-group">
             <button 
               onClick={() => toggleFilter('category')} 
