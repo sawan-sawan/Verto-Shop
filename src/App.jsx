@@ -1,10 +1,9 @@
-// App.jsx (FINAL CORRECTED CODE)
+// App.jsx (CORRECTED CODE)
 import React, { useState, useEffect, useCallback } from "react";
 import Lenis from "@studio-freight/lenis";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 import { auth, db } from "./firebase";
-// ✅ Step 1: `updateProfile` import karein
 import { onAuthStateChanged, signOut, updateProfile } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
@@ -24,11 +23,14 @@ import Features from "./components/Features";
 import GlobalLoader from "./components/GlobalLoader";
 import GlobalNotification from './components/GlobalNotification';
 import TextWithCardSlider from "./components/TextWithCardSlider";
+// Men.jsx यहाँ import है, यह सही है।
+
 // Pages
 import WorkspaceSale from "./pages/WorkpaceSale";
 import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/AuthLogin";
 import ProfilePage from "./pages/ProfilePage";
+import Men from "./pages/Men"; 
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -67,7 +69,7 @@ function App() {
       } else {
         await setDoc(profileRef, {
           displayName: "Guest User",
-          bio: "", // Bio ko shuru mein khaali rakhein
+          bio: "",
           createdAt: new Date(),
         });
         setUserProfile({ displayName: "Guest User", bio: "" });
@@ -144,31 +146,15 @@ function App() {
     signOut(auth).catch((error) => console.error("Logout Error:", error));
   };
 
-  // ✅ Step 2: Profile Update function banayein
   const handleProfileUpdate = async (updatedData) => {
     if (!currentUser) return;
-
     const { fullName, bio } = updatedData;
     const userRef = doc(db, "users", currentUser.uid);
-
     try {
-      // Firebase Auth (ID Card) update karein
-      await updateProfile(currentUser, {
-        displayName: fullName,
-      });
-
-      // Firestore Database (Personal File) update karein
-      await setDoc(userRef, {
-        displayName: fullName,
-        bio: bio
-      }, { merge: true });
-
-      // Local state update karein
+      await updateProfile(currentUser, { displayName: fullName });
+      await setDoc(userRef, { displayName: fullName, bio: bio }, { merge: true });
       setUserProfile(prevProfile => ({ ...prevProfile, displayName: fullName, bio: bio }));
-
-      // Success message dikhayein
       sessionStorage.setItem('successMessage', 'Profile updated successfully!');
-
     } catch (error) {
       console.error("Error updating profile: ", error);
       alert("Error updating profile.");
@@ -194,20 +180,21 @@ function App() {
     <Router>
       <GlobalNotification />
       <Navbar cartItemCount={cartItemCount} user={currentUser} handleLogout={handleLogout} />
-
       {loadingAuth ? (
         <GlobalLoader />
       ) : (
         <>
           <Routes>
-            <Route path="/" element={<> <Hero /> <PopularProducts /> <Categories /> <NewArrival /> <DealsSection /><TextWithCardSlider /> <OfferBanner /> <Features />  <Contact /> </>} />
-            <Route path="/men" element={<WorkspaceSale defaultCollection="men" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} />} />
-            <Route path="/women" element={<WorkspaceSale defaultCollection="Women" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} />} />
+            {/* होमपेज पर Men सेक्शन अभी भी दिखेगा, आप चाहें तो यहाँ से <Men /> हटा सकते हैं */}
+            <Route path="/" element={<> <Hero /> <PopularProducts /> <Categories /> <NewArrival /> <DealsSection /><TextWithCardSlider /><Men /> <OfferBanner /> <Features />  <Contact /> </>} />
+            
+            {/* ✅ यहाँ बदलाव किया गया है */}
+            <Route path="/men" element={<Men onAddToCart={handleAddToCart} currentUser={currentUser} justAddedProductId={justAddedProductId} />} />
+
+            <Route path="/allproducts" element={<WorkspaceSale defaultCollection="Women" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} />} />
             <Route path="/cart" element={<CartPage cartItems={cartItems} onUpdateQuantity={handleUpdateQuantity} />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={currentUser ? <Navigate to="/profile" /> : <LoginPage />} />
-            
-            {/* ✅ Step 3: ProfilePage ko naya function pass karein */}
             <Route
               path="/profile"
               element={
@@ -216,7 +203,7 @@ function App() {
                     user={currentUser}
                     userProfile={userProfile}
                     handleLogout={handleLogout}
-                    onProfileUpdate={handleProfileUpdate} // Yahan pass karein
+                    onProfileUpdate={handleProfileUpdate}
                   />
                 ) : (
                   <Navigate to="/login" />

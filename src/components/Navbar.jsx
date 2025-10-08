@@ -39,9 +39,9 @@ const Navbar = ({ cartItemCount }) => {
 
           {/* Desktop Menu */}
           <div className="menu desktop-only">
+            <Link to="/allproducts">All Clothes</Link>
             <Link to="/men">Men</Link>
-            <Link to="/women">Women</Link>
-            <a href="#">Fleece</a>
+            <a href="#">Women</a>
             <div className="dropdown">
               <button className="dropdown-btn" onClick={() => setDropdownOpen(!dropdownOpen)}>
                 Categories <ChevronDown size={16} />
@@ -58,7 +58,7 @@ const Navbar = ({ cartItemCount }) => {
                     <a href="#">Sunglasses</a>
                     <a href="#">Belt</a>
                     <a href="#">Shoes</a>
-                    <a href="#"></a>
+                    <a href="#">Fleece</a>
                   </motion.div>
                 )}
               </AnimatePresence>

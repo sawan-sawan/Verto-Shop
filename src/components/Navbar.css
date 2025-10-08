@@ -56,6 +56,7 @@
 }
 
 .logo-text .shop {
+    font-family: "Unbounded", sans-serif;
     color: #1e2533;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
 }
