@@ -31,7 +31,7 @@ import CartPage from "./pages/CartPage";
 import LoginPage from "./pages/AuthLogin";
 import ProfilePage from "./pages/ProfilePage";
 import Men from "./pages/Men"; 
-
+import Women from "./pages/Women"; // 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
@@ -190,6 +190,7 @@ function App() {
             
             {/* ✅ यहाँ बदलाव किया गया है */}
             <Route path="/men" element={<Men onAddToCart={handleAddToCart} currentUser={currentUser} justAddedProductId={justAddedProductId} />} />
+            <Route path="/women" element={<Women onAddToCart={handleAddToCart} currentUser={currentUser} justAddedProductId={justAddedProductId} />} />
 
             <Route path="/allproducts" element={<WorkspaceSale defaultCollection="Women" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} />} />
             <Route path="/cart" element={<CartPage cartItems={cartItems} onUpdateQuantity={handleUpdateQuantity} />} />

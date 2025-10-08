@@ -41,7 +41,7 @@ const Navbar = ({ cartItemCount }) => {
           <div className="menu desktop-only">
             <Link to="/allproducts">All Clothes</Link>
             <Link to="/men">Men</Link>
-            <a href="#">Women</a>
+            <a href="/women">Women</a>
             <div className="dropdown">
               <button className="dropdown-btn" onClick={() => setDropdownOpen(!dropdownOpen)}>
                 Categories <ChevronDown size={16} />
