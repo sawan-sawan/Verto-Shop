@@ -370,3 +370,123 @@
     font-size: 16px;
     cursor: pointer;
 }
+/* src/pages/Fleece.css (Complete & Responsive) */
+:root {
+    --fleece-catalog-text-primary: #111827;
+    --fleece-catalog-text-secondary: #6b7280;
+    --fleece-catalog-border-color: #e5e7eb;
+    --fleece-catalog-background-light: #f9fafb;
+    --fleece-catalog-accent: #ff6825;
+}
+
+.fleece-catalog-page-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 6rem 2.5rem 2rem;
+}
+
+.fleece-catalog-header h1 {
+    position: relative;
+    top: 30px;
+    font-size: 17px;
+    font-weight: 200;
+    font-family: "BBH Sans Bartle";
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: left;
+    margin-bottom: 1.5rem;
+    padding-bottom: 7px;
+}
+
+.fleece-catalog-toolbar {
+    border-top: 1px solid var(--fleece-catalog-border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.fleece-catalog-filters,
+.fleece-catalog-tools {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.fleece-catalog-grid {
+    display: grid;
+    gap: 1.5rem 1rem;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.fleece-catalog-card {
+    text-align: left;
+}
+
+.fleece-catalog-img-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+
+.fleece-catalog-img-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.fleece-catalog-img-hover {
+    opacity: 0;
+}
+
+.fleece-catalog-card:hover .fleece-catalog-img-hover {
+    opacity: 1;
+}
+
+/* --- Responsive Styles --- */
+@media (max-width: 1200px) {
+    .fleece-catalog-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .fleece-catalog-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .fleece-catalog-page-container {
+        padding: 6rem 1rem;
+    }
+
+    .fleece-catalog-item-count {
+        display: none;
+    }
+
+    .fleece-catalog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .fleece-catalog-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .fleece-catalog-tools {
+        justify-content: space-between;
+    }
+}

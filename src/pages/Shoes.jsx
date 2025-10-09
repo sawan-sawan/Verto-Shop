@@ -32,7 +32,7 @@ const ProductPopup = ({ product, onClose, onConfirmAddToCart }) => {
     const sizes = ['6', '7', '8', '9', '10', '11']; // Shoe sizes
     const handleAddToCartClick = () => { onConfirmAddToCart({ size: selectedSize, quantity }); };
     const handlePopupContentClick = (e) => e.stopPropagation();
-    useScrollToTop();
+
 
     return (
         <div className="shoes-catalog-popup-overlay" onClick={onClose}>
@@ -146,7 +146,7 @@ const Shoes = ({ onAddToCart, currentUser }) => {
         if (window.innerWidth > 768) setPopupProduct(product);
         else onAddToCart(product, { size: '8', quantity: 1 });
     };
-    
+
     const handleConfirmAddToCart = (details) => {
         onAddToCart(popupProduct, details);
         setTimeout(() => setPopupProduct(null), 500);
@@ -164,12 +164,12 @@ const Shoes = ({ onAddToCart, currentUser }) => {
             return { ...prev, [type]: newValues };
         });
     };
-    
+
     const handleSortChange = (value) => {
         setSortBy(value);
         setOpenFilter(null);
     };
-
+    useScrollToTop();
     const toggleFilter = (filterName) => setOpenFilter(openFilter === filterName ? null : filterName);
 
     if (loading) return <div>Loading...</div>;

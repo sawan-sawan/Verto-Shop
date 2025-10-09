@@ -378,3 +378,123 @@
     font-size: 16px;
     cursor: pointer;
 }
+/* src/pages/Belt.css (Complete & Responsive) */
+:root {
+    --belt-catalog-text-primary: #111827;
+    --belt-catalog-text-secondary: #6b7280;
+    --belt-catalog-border-color: #e5e7eb;
+    --belt-catalog-background-light: #f9fafb;
+    --belt-catalog-accent: #ff6825;
+}
+
+.belt-catalog-page-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 6rem 2.5rem 2rem;
+}
+
+.belt-catalog-header h1 {
+    position: relative;
+    top: 30px;
+    font-size: 17px;
+    font-weight: 200;
+    font-family: "BBH Sans Bartle";
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: left;
+    margin-bottom: 1.5rem;
+    padding-bottom: 7px;
+}
+
+.belt-catalog-toolbar {
+    border-top: 1px solid var(--belt-catalog-border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+}
+
+.belt-catalog-filters,
+.belt-catalog-tools {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.belt-catalog-grid {
+    display: grid;
+    gap: 1.5rem 1rem;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.belt-catalog-card {
+    text-align: left;
+}
+
+.belt-catalog-img-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+
+.belt-catalog-img-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.belt-catalog-img-hover {
+    opacity: 0;
+}
+
+.belt-catalog-card:hover .belt-catalog-img-hover {
+    opacity: 1;
+}
+
+/* --- Responsive Styles --- */
+@media (max-width: 1200px) {
+    .belt-catalog-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 992px) {
+    .belt-catalog-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .belt-catalog-page-container {
+        padding: 6rem 1rem;
+    }
+
+    .belt-catalog-item-count {
+        display: none;
+    }
+
+    .belt-catalog-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .belt-catalog-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .belt-catalog-tools {
+        justify-content: space-between;
+    }
+}

@@ -373,3 +373,100 @@
         font-size: 15px;
     }
 }
+
+/* ================= NAVBAR BASE ================= */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 14px 15px;
+    transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+}
+.navbar.scrolled {
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    padding: 12px 20px;
+    border-radius: 20px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid rgba(128, 128, 128, 0.415);
+}
+
+/* ================= LOGO ================= */
+.logo { display: flex; align-items: center; text-decoration: none; }
+.logo-img { width: 32px; height: auto; margin-right: 10px; }
+.logo-text { font-size: 22px; font-weight: bold; font-family: "Unbounded", sans-serif; }
+.logo-text .verto { color: #ff6825; }
+.logo-text .shop { color: #1e2533; text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); }
+
+/* ================= DESKTOP MENU ================= */
+.menu { display: flex; gap: 25px; align-items: center; }
+.menu a { text-decoration: none; color: #333; font-size: 18px; font-weight: 500; transition: color 0.3s; }
+.menu a:hover { color: #ff6825; }
+
+/* ================= DROPDOWN ================= */
+.dropdown { position: relative; }
+.dropdown-btn { background: none; border: none; cursor: pointer; font-size: 18px; font-weight: 500; display: flex; align-items: center; gap: 5px; color: #333; }
+.dropdown-menu { position: absolute; top: 120%; left: 0; background: #fff; border-radius: 6px; padding: 12px 0; display: flex; flex-direction: column; min-width: 180px; z-index: 2000; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+.dropdown-menu a { padding: 10px 18px; font-size: 16px; color: #333; text-decoration: none; transition: background 0.3s; }
+.dropdown-menu a:hover { background: #f4f4f4; color: #ff6825; }
+
+/* ================= ICONS / ACTIONS ================= */
+.actions { display: flex; align-items: center; gap: 14px; }
+.icon-btn, .icon-btnn { background: none; border: none; cursor: pointer; display: flex; align-items: center; color: #333; transition: color 0.3s; text-decoration: none; padding: 0; }
+.icon-btn:hover, .icon-btnn:hover { color: #ff6825; }
+.cart-icon-wrapper { position: relative; }
+.cart-badge { position: absolute; top: -8px; right: -10px; background-color: #ff6825; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: bold; border: 1px solid white; }
+.wishlist-dot { position: absolute; top: 0; right: 0; width: 8px; height: 8px; background-color: red; border-radius: 50%; }
+
+/* ================= MOBILE STYLES ================= */
+.mobile-btn { display: none; background: none; border: none; cursor: pointer; color: #ff6825; }
+.mobile-menu { position: fixed; top: 0; left: 0; height: 100%; width: 100%; background: #f9fafb; z-index: 2000; display: flex; flex-direction: column; padding: 20px; }
+.mobile-menu-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid #e5e7eb; }
+.mobile-logo { display: flex; align-items: center; text-decoration: none; }
+.mobile-logo img { width: 36px; height: auto; margin-right: 10px; }
+.mobile-logo-text { font-size: 20px; font-weight: bold; font-family: "Unbounded", sans-serif; }
+.mobile-logo-text .verto { color: #ff6825; }
+.mobile-logo-text .shop { color: #1e2533; }
+.mobile-close-btn { background: none; border: none; cursor: pointer; color: #ff6825; }
+
+/* === UPDATED: MOBILE MENU LINKS === */
+.mobile-menu-links { display: flex; flex-direction: column; gap: 8px; padding-top: 20px; flex-grow: 1; }
+.mobile-menu-links a, .mobile-menu-links button { text-decoration: none; font-size: 18px; font-weight: 500; color: #374151; background: none; border: none; text-align: left; cursor: pointer; padding: 12px 10px; transition: color 0.2s, background-color 0.2s; display: flex; align-items: center; gap: 16px; border-radius: 8px; }
+.mobile-menu-links a:hover, .mobile-menu-links button:hover { background-color: #f0f0f0; color: #ff6825; }
+.mobile-menu-divider { border: none; border-top: 1px solid #e5e7eb; margin: 15px 0; }
+
+/* === UPDATED: MOBILE DROPDOWN STYLES === */
+.mobile-category-dropdown { width: 100%; }
+.mobile-category-trigger { width: 100%; display: flex; justify-content: space-between; align-items: center; font-size: 18px !important; }
+.mobile-category-trigger span { display: flex; align-items: center; gap: 16px; }
+.mobile-submenu { overflow: hidden; display: flex; flex-direction: column; gap: 8px; padding-left: 25px; margin-top: 8px; }
+.mobile-submenu a { font-size: 16px !important; color: #6b7280; gap: 12px; }
+
+/* === NEW: MOBILE MENU FOOTER (FOR LOGGED-IN USER) === */
+.mobile-menu-footer { margin-top: auto; padding: 20px 10px; border-top: 1px solid #e5e7eb; display: flex; align-items: center; gap: 15px; }
+.footer-icon { color: #9ca3af; }
+.footer-user-info .user-name { font-weight: 600; color: #1f2937; margin: 0; }
+.footer-user-info .user-email { font-size: 14px; color: #6b7280; margin: 0; }
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .menu { display: none; }
+    .mobile-btn { display: block; }
+    .navbar-container { background: #fff; padding: 12px 15px; }
+    .logo-text { font-size: 18px; }
+    .logo-img { width: 28px; }
+    .icon-btnn { display: none; visibility: hidden; }
+}
+@media (max-width: 320px) {
+    .logo-text { font-size: 15px; }
+}
