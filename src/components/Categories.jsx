@@ -1,11 +1,13 @@
 import React, { useRef } from "react";
 import "./Categories.css";
+import { Link } from "react-router-dom"; // Step 1: Link ko import karein
 
+// Step 2: Har category ke liye ek 'path' add karein
 const categories = [
-  { id: 1, title: "Men", image: "/img/cimg1.png" },
-  { id: 2, title: "Women", image: "/img/cimg2.webp" },
-  { id: 3, title: "Shoes", image: "/img/cimg3.webp" },
-  { id: 4, title: "Sunglasses", image: "/img/cimg4.webp" },
+  { id: 1, title: "Men", image: "/img/cimg1.png", path: "/men" },
+  { id: 2, title: "Women", image: "/img/cimg2.webp", path: "/women" },
+  { id: 3, title: "Shoes", image: "/img/cimg3.webp", path: "/shoes" },
+  { id: 4, title: "Sunglasses", image: "/img/cimg4.webp", path: "/sunglasses" },
 ];
 
 export default function Categories() {
@@ -27,14 +29,15 @@ export default function Categories() {
         <div className="slider-wrapper">
           <div className="category-grid" ref={sliderRef}>
             {categories.map((cat) => (
-              <div key={cat.id} className="category-item">
+              // Step 3: 'div' ko 'Link' se replace karein
+              <Link to={cat.path} key={cat.id} className="category-item">
                 <div className="category-image-group">
                   <img src={cat.image} alt={cat.title} className="category-photo" />
                   <div className="category-overlay">
                     <p className="category-name">{cat.title}</p>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 

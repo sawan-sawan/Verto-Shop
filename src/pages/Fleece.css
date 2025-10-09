@@ -1,0 +1,372 @@
+/* src/pages/Fleece.css */
+:root {
+    --fleece-catalog-text-primary: #111827;
+    --fleece-catalog-text-secondary: #6b7280;
+    --fleece-catalog-border-color: #e5e7eb;
+    --fleece-catalog-background-light: #f9fafb;
+}
+
+.fleece-catalog-page-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 6rem 2.5rem 2rem;
+}
+
+.fleece-catalog-header h1 {
+    position: relative;
+    top: 30px;
+    font-size: 17px;
+    font-weight: 200;
+    font-family: "BBH Sans Bartle";
+    text-transform: uppercase;
+    text-align: left;
+    margin-bottom: 1.5rem;
+    padding-bottom: 7px;
+}
+
+.fleece-catalog-toolbar {
+    border-top: 1px solid var(--fleece-catalog-border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+}
+
+.fleece-catalog-filters,
+.fleece-catalog-tools {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.fleece-catalog-filter-group {
+    position: relative;
+}
+
+.fleece-catalog-filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: white;
+    border: 1px solid var(--fleece-catalog-border-color);
+    border-radius: 999px;
+    cursor: pointer;
+}
+
+.fleece-catalog-filter-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    width: 220px;
+    background-color: white;
+    border: 1px solid var(--fleece-catalog-border-color);
+    border-radius: 8px;
+    z-index: 50;
+}
+
+.fleece-catalog-dropdown-list {
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 0;
+}
+
+.fleece-catalog-dropdown-list li {
+    padding: 0.5rem 1rem;
+}
+
+.fleece-catalog-dropdown-list label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+}
+
+.fleece-catalog-color-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+    gap: 0.75rem;
+    padding: 1rem;
+}
+
+.fleece-catalog-color-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.fleece-catalog-color-swatch.selected {
+    border-color: var(--fleece-catalog-text-primary);
+}
+
+.fleece-catalog-sort-dropdown {
+    width: 220px;
+}
+
+.fleece-catalog-sort-list li {
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+.fleece-catalog-sort-list li.active {
+    font-weight: 600;
+}
+
+.layout-toggle button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.fleece-catalog-item-count {
+    font-size: 0.9rem;
+    color: var(--fleece-catalog-text-secondary);
+}
+
+.fleece-catalog-grid {
+    display: grid;
+    gap: 1.5rem 1rem;
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.fleece-catalog-card {
+    text-align: left;
+}
+
+.fleece-catalog-img-wrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+
+.fleece-catalog-img-wrapper img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: opacity 0.4s ease-in-out;
+}
+
+.fleece-catalog-img-hover {
+    opacity: 0;
+}
+
+.fleece-catalog-card:hover .fleece-catalog-img-hover {
+    opacity: 1;
+}
+
+.fleece-catalog-info .name {
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 0 0 0.25rem 0;
+}
+
+.fleece-catalog-info .price {
+    font-size: 0.9rem;
+    color: var(--fleece-catalog-text-secondary);
+}
+
+.fleece-catalog-add-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: var(--fleece-catalog-background-light);
+    border: 1px solid var(--fleece-catalog-border-color);
+    border-radius: 6px;
+    padding: 0.6rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* Popup Styles */
+.fleece-catalog-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.fleece-catalog-popup-content,
+.fleece-catalog-login-content {
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    width: 90%;
+    max-width: 680px;
+    position: relative;
+    overflow: hidden;
+}
+
+.fleece-catalog-popup-close-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    color: #888;
+    transition: background-color 0.2s;
+    z-index: 10;
+}
+
+.fleece-catalog-popup-close-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.fleece-catalog-popup-content.product {
+    display: flex;
+}
+
+.fleece-catalog-popup-image {
+    flex: 0 0 45%;
+    aspect-ratio: 3 / 4;
+}
+
+.fleece-catalog-popup-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.fleece-catalog-popup-details {
+    flex: 1;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.fleece-catalog-popup-price {
+    font-size: 1.1rem;
+    color: var(--fleece-catalog-text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.fleece-size-options {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.fleece-size-btn {
+    min-width: 40px;
+    height: 40px;
+    border: 1px solid var(--fleece-catalog-border-color);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.fleece-size-btn.selected {
+    background-color: var(--fleece-catalog-text-primary);
+    color: white;
+}
+
+.fleece-quantity-selector {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--fleece-catalog-border-color);
+    border-radius: 6px;
+    margin-top: 2rem;
+    align-self: flex-start;
+    margin-bottom: 1rem;
+}
+
+.fleece-quantity-selector button {
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fleece-quantity-selector span {
+    width: 40px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.fleece-quantity-selector span {
+    width: 40px;
+    text-align: center;
+}
+
+.fleece-popup-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: auto;
+}
+
+.fleece-popup-add-to-cart-btn,
+.fleece-popup-buy-now-btn {
+    width: 100%;
+    padding: 0.9rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    border: none;
+}
+
+.fleece-popup-add-to-cart-btn {
+    background-color: var(--fleece-catalog-text-primary);
+    color: white;
+}
+
+.fleece-popup-buy-now-btn {
+    background-color: #ff6825;
+    color: white;
+}
+
+.fleece-more-payment-options {
+    text-align: center;
+    font-size: 0.8rem;
+    text-decoration: none;
+}
+
+/* Login Popup */
+.fleece-catalog-login-content {
+    display: flex;
+    max-width: 650px;
+}
+
+.fleece-catalog-login-image {
+    flex-basis: 40%;
+    background-color: #fff8f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fleece-catalog-login-details {
+    flex-basis: 60%;
+    padding: 40px;
+}
+
+.fleece-catalog-login-nav-btn {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 14px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}

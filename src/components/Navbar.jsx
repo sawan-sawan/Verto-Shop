@@ -55,10 +55,10 @@ const Navbar = ({ cartItemCount }) => {
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <a href="#">Sunglasses</a>
-                    <a href="#">Belt</a>
-                    <a href="#">Shoes</a>
-                    <a href="#">Fleece</a>
+                    <a href="/glasses">Sunglasses</a>
+                    <a href="/belt">Belt</a>
+                    <a href="/shoes">Shoes</a>
+                    <a href="/fleece">Fleece</a>
                   </motion.div>
                 )}
               </AnimatePresence>

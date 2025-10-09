@@ -5,6 +5,7 @@ import "../pages/Men.css"; // आपका CSS फाइल
 import { useNavigate } from "react-router-dom";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase.js"; // आपका Firebase कॉन्फ़िग
+import { useScrollToTop } from "../hooks/useScrollToTop";
 
 // --- सारे SVG Icons ---
 const PlusIcon = () => (<svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" fill="none" /></svg>);
@@ -33,6 +34,8 @@ const ProductPopup = ({ product, onClose, onConfirmAddToCart }) => {
     const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
     const handleAddToCartClick = () => { onConfirmAddToCart({ size: selectedSize, quantity }); };
     const handlePopupContentClick = (e) => e.stopPropagation();
+      useScrollToTop();
+    
     return (
         <div className="men-catalog-popup-overlay" onClick={onClose}>
             <div className="men-catalog-popup-content product" onClick={handlePopupContentClick}>

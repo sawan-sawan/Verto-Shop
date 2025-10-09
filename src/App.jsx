@@ -1,14 +1,10 @@
 // App.jsx (CORRECTED CODE)
 import React, { useState, useEffect, useCallback } from "react";
-import Lenis from "@studio-freight/lenis";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-
 import { auth, db } from "./firebase";
 import { onAuthStateChanged, signOut, updateProfile } from "firebase/auth";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-
 import "./App.css";
-
 // Components
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
@@ -32,6 +28,10 @@ import LoginPage from "./pages/AuthLogin";
 import ProfilePage from "./pages/ProfilePage";
 import Men from "./pages/Men"; 
 import Women from "./pages/Women"; // 
+import Glasses from "./pages/Glasses";
+import Belt from "./pages/Belt";
+import Shoes from "./pages/Shoes";
+import Fleece from "./pages/Fleece";
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
@@ -162,19 +162,7 @@ function App() {
   };
 
   // === Smooth Scroll (Lenis) ===
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      smoothTouch: true,
-    });
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
-  }, []);
+
 
   return (
     <Router>
@@ -191,7 +179,10 @@ function App() {
             {/* ✅ यहाँ बदलाव किया गया है */}
             <Route path="/men" element={<Men onAddToCart={handleAddToCart} currentUser={currentUser} justAddedProductId={justAddedProductId} />} />
             <Route path="/women" element={<Women onAddToCart={handleAddToCart} currentUser={currentUser} justAddedProductId={justAddedProductId} />} />
-
+            <Route path="/glasses" element={<Glasses onAddToCart={handleAddToCart} currentUser={currentUser} justAddedProductId={justAddedProductId} />} />
+            <Route path="/belt" element={<Belt onAddToCart={handleAddToCart} currentUser={currentUser} justAddedProductId={justAddedProductId} />} />
+            <Route path="/shoes" element={<Shoes onAddToCart={handleAddToCart} currentUser={currentUser} justAddedProductId={justAddedProductId} />} />
+            <Route path="/fleece" element={<Fleece onAddToCart={handleAddToCart} currentUser={currentUser} justAddedProductId={justAddedProductId} />} />
             <Route path="/allproducts" element={<WorkspaceSale defaultCollection="Women" onAddToCart={handleAddToCart} justAddedProductId={justAddedProductId} currentUser={currentUser} />} />
             <Route path="/cart" element={<CartPage cartItems={cartItems} onUpdateQuantity={handleUpdateQuantity} />} />
             <Route path="/contact" element={<Contact />} />

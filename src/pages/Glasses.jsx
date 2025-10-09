@@ -1,14 +1,14 @@
-// src/components/Women.jsx (FINAL & COMPLETE CODE - UPDATED FOR FIREBASE)
+// src/pages/Glasses.jsx (FINAL & COMPLETE CODE)
 
 import React, { useState, useEffect, useMemo, useRef } from "react";
-import "../pages/Women.css"; // आपका CSS फाइल
+import "./Glasses.css"; // बदला हुआ CSS फाइल
 import { useNavigate } from "react-router-dom";
 import { getFirestore, collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase.js"; // आपका Firebase कॉन्फ़िग
 import { useScrollToTop } from "../hooks/useScrollToTop";
 
 
-// --- सारे SVG Icons ---
+// --- सारे SVG Icons (No changes needed here) ---
 const PlusIcon = () => (<svg width="16" height="16" viewBox="0 0 24 24"><path d="M12 5V19M5 12H19" stroke="currentColor" strokeWidth="2" fill="none" /></svg>);
 const MinusIcon = () => (<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>);
 const CloseIcon = ({ width = 18, height = 18 }) => (<svg width={width} height={height} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>);
@@ -17,7 +17,7 @@ const ChevronDownIcon = () => (<svg width="12" height="12" viewBox="0 0 24 24"><
 const Grid4Icon = () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" stroke="currentColor" strokeWidth="2" /><rect x="13" y="3" width="8" height="8" stroke="currentColor" strokeWidth="2" /><rect x="3" y="13" width="8" height="8" stroke="currentColor" strokeWidth="2" /><rect x="13" y="13" width="8" height="8" stroke="currentColor" strokeWidth="2" /></svg>);
 const Grid2Icon = () => (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="18" height="8" stroke="currentColor" strokeWidth="2" /><rect x="3" y="13" width="18" height="8" stroke="currentColor" strokeWidth="2" /></svg>);
 
-// --- फ़िल्टर के लिए Options ---
+// --- फ़िल्टर के लिए Options (आप इन्हें Sunglasses के हिसाब से बदल सकते हैं) ---
 const availabilityOptions = ["In stock", "Out of stock"];
 const colorOptions = ["Black", "Beige", "White", "Green", "Blue", "Brown", "Yellow", "Gray", "Multi"];
 const sortOptions = [
@@ -30,36 +30,37 @@ const sortOptions = [
 
 // --- Popup Components ---
 const ProductPopup = ({ product, onClose, onConfirmAddToCart }) => {
-    const [selectedSize, setSelectedSize] = useState('S');
+    // Note: Glasses might not have sizes like 'S', 'M'. You can change this later.
+    const [selectedSize, setSelectedSize] = useState('Standard'); 
     const [quantity, setQuantity] = useState(1);
-    const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL'];
+    const sizes = ['Standard', 'Wide']; // Example sizes for glasses
     const handleAddToCartClick = () => { onConfirmAddToCart({ size: selectedSize, quantity }); };
     const handlePopupContentClick = (e) => e.stopPropagation();
     useScrollToTop();
 
     return (
-        <div className="women-catalog-popup-overlay" onClick={onClose}>
-            <div className="women-catalog-popup-content product" onClick={handlePopupContentClick}>
-                <button className="women-catalog-popup-close-btn" onClick={onClose}><CloseIcon /></button>
-                <div className="women-catalog-popup-image"><img src={product.images[0]} alt={product.name} /></div>
-                <div className="women-catalog-popup-details">
+        <div className="glasses-catalog-popup-overlay" onClick={onClose}>
+            <div className="glasses-catalog-popup-content product" onClick={handlePopupContentClick}>
+                <button className="glasses-catalog-popup-close-btn" onClick={onClose}><CloseIcon /></button>
+                <div className="glasses-catalog-popup-image"><img src={product.images[0]} alt={product.name} /></div>
+                <div className="glasses-catalog-popup-details">
                     <h2>{product.name}</h2>
-                    <p className="women-catalog-popup-price">${product.price.toFixed(2)}</p>
-                    <div className="women-catalog-size-selector">
+                    <p className="glasses-catalog-popup-price">${product.price.toFixed(2)}</p>
+                    <div className="glasses-catalog-size-selector">
                         <label>Size</label>
-                        <div className="women-size-options">
-                            {sizes.map(size => (<button key={size} onClick={() => setSelectedSize(size)} className={`women-size-btn ${selectedSize === size ? 'selected' : ''}`}>{size}</button>))}
+                        <div className="glasses-size-options">
+                            {sizes.map(size => (<button key={size} onClick={() => setSelectedSize(size)} className={`glasses-size-btn ${selectedSize === size ? 'selected' : ''}`}>{size}</button>))}
                         </div>
                     </div>
-                    <div className="women-quantity-selector">
+                    <div className="glasses-quantity-selector">
                         <button onClick={() => setQuantity(q => Math.max(1, q - 1))}><MinusIcon /></button>
                         <span>{quantity}</span>
                         <button onClick={() => setQuantity(q => q + 1)}><PlusIcon /></button>
                     </div>
-                    <div className="women-popup-actions">
-                        <button onClick={handleAddToCartClick} className="women-popup-add-to-cart-btn">Add to cart</button>
-                        <button className="women-popup-buy-now-btn">Buy with VertoShop</button>
-                        <a href="#" className="women-more-payment-options">More payment options</a>
+                    <div className="glasses-popup-actions">
+                        <button onClick={handleAddToCartClick} className="glasses-popup-add-to-cart-btn">Add to cart</button>
+                        <button className="glasses-popup-buy-now-btn">Buy with VertoShop</button>
+                        <a href="#" className="glasses-more-payment-options">More payment options</a>
                     </div>
                 </div>
             </div>
@@ -69,22 +70,22 @@ const ProductPopup = ({ product, onClose, onConfirmAddToCart }) => {
 const LoginRequiredPopup = ({ onClose, onNavigate }) => {
     const handlePopupContentClick = (e) => e.stopPropagation();
     return (
-        <div className="women-catalog-popup-overlay" onClick={onClose}>
-            <div className="women-catalog-login-content" onClick={handlePopupContentClick}>
-                <button className="women-catalog-popup-close-btn" onClick={onClose}><CloseIcon width={22} height={22} /></button>
-                <div className="women-catalog-login-image"><LoginIllustrationIcon /></div>
-                <div className="women-catalog-login-details">
+        <div className="glasses-catalog-popup-overlay" onClick={onClose}>
+            <div className="glasses-catalog-login-content" onClick={handlePopupContentClick}>
+                <button className="glasses-catalog-popup-close-btn" onClick={onClose}><CloseIcon width={22} height={22} /></button>
+                <div className="glasses-catalog-login-image"><LoginIllustrationIcon /></div>
+                <div className="glasses-catalog-login-details">
                     <h2>Please Login or Sign Up</h2>
                     <p>You need to log in before adding items to your cart.</p>
-                    <button onClick={onNavigate} className="women-catalog-login-nav-btn">Go to Login / Sign Up</button>
+                    <button onClick={onNavigate} className="glasses-catalog-login-nav-btn">Go to Login / Sign Up</button>
                 </div>
             </div>
         </div>
     );
 };
 
-// --- Main Women Component ---
-const Women = ({ onAddToCart, currentUser, justAddedProductId }) => {
+// --- Main Glasses Component ---
+const Glasses = ({ onAddToCart, currentUser, justAddedProductId }) => {
     const navigate = useNavigate();
     const filterRef = useRef(null);
     const [allProducts, setAllProducts] = useState([]);
@@ -105,8 +106,8 @@ const Women = ({ onAddToCart, currentUser, justAddedProductId }) => {
         const fetchProducts = async () => {
             try {
                 // *** YAHAN BADLAAV KIYA GAYA HAI ***
-                // Ab yeh code 'products' ke bajaye 'women_products' collection se data layega.
-                const productsCollection = collection(db, "women_products");
+                // Ab yeh code 'sunglasses_products' collection se data layega.
+                const productsCollection = collection(db, "sunglasses_products");
 
                 const snapshot = await getDocs(productsCollection);
                 const productList = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -159,7 +160,7 @@ const Women = ({ onAddToCart, currentUser, justAddedProductId }) => {
         if (window.innerWidth > 768) {
             setPopupProduct(product);
         } else {
-            onAddToCart(product, { size: 'M', quantity: 1 });
+            onAddToCart(product, { size: 'Standard', quantity: 1 });
         }
     };
     const handleClosePopup = () => {
@@ -196,18 +197,18 @@ const Women = ({ onAddToCart, currentUser, justAddedProductId }) => {
     if (error) return <div>{error}</div>;
 
     return (
-        <div className="women-catalog-page-container">
-            <header className="women-catalog-header"><h1>Women's Collection</h1></header>
+        <div className="glasses-catalog-page-container">
+            <header className="glasses-catalog-header"><h1>Sunglasses Collection</h1></header>
 
-            <div className="women-catalog-toolbar">
-                <div className="women-catalog-filters" ref={filterRef}>
-                    <div className="women-catalog-filter-group">
-                        <button onClick={() => toggleFilter('availability')} className="women-catalog-filter-btn">
+            <div className="glasses-catalog-toolbar">
+                <div className="glasses-catalog-filters" ref={filterRef}>
+                    <div className="glasses-catalog-filter-group">
+                        <button onClick={() => toggleFilter('availability')} className="glasses-catalog-filter-btn">
                             Availability <ChevronDownIcon />
                         </button>
                         {openFilter === 'availability' && (
-                            <div className="women-catalog-filter-dropdown">
-                                <ul className="women-catalog-dropdown-list">
+                            <div className="glasses-catalog-filter-dropdown">
+                                <ul className="glasses-catalog-dropdown-list">
                                     {availabilityOptions.map(option => (
                                         <li key={option}><label><input type="checkbox" checked={activeFilters.availability.includes(option)} onChange={() => handleFilterChange('availability', option)} /> {option}</label></li>
                                     ))}
@@ -215,27 +216,27 @@ const Women = ({ onAddToCart, currentUser, justAddedProductId }) => {
                             </div>
                         )}
                     </div>
-                    <div className="women-catalog-filter-group">
-                        <button onClick={() => toggleFilter('color')} className="women-catalog-filter-btn">
+                    <div className="glasses-catalog-filter-group">
+                        <button onClick={() => toggleFilter('color')} className="glasses-catalog-filter-btn">
                             Color <ChevronDownIcon />
                         </button>
                         {openFilter === 'color' && (
-                            <div className="women-catalog-filter-dropdown">
-                                <div className="women-catalog-color-list">
+                            <div className="glasses-catalog-filter-dropdown">
+                                <div className="glasses-catalog-color-list">
                                     {colorOptions.map(color => (
-                                        <button key={color} className={`women-catalog-color-swatch ${activeFilters.color.includes(color) ? 'selected' : ''}`} style={{ backgroundColor: color.toLowerCase() }} onClick={() => handleFilterChange('color', color)} title={color} />
+                                        <button key={color} className={`glasses-catalog-color-swatch ${activeFilters.color.includes(color) ? 'selected' : ''}`} style={{ backgroundColor: color.toLowerCase() }} onClick={() => handleFilterChange('color', color)} title={color} />
                                     ))}
                                 </div>
                             </div>
                         )}
                     </div>
-                    <div className="women-catalog-filter-group">
-                        <button onClick={() => toggleFilter('category')} className="women-catalog-filter-btn" disabled={subCategoryOptions.length === 0}>
+                    <div className="glasses-catalog-filter-group">
+                        <button onClick={() => toggleFilter('category')} className="glasses-catalog-filter-btn" disabled={subCategoryOptions.length === 0}>
                             Categories <ChevronDownIcon />
                         </button>
                         {openFilter === 'category' && (
-                            <div className="women-catalog-filter-dropdown">
-                                <ul className="women-catalog-dropdown-list">
+                            <div className="glasses-catalog-filter-dropdown">
+                                <ul className="glasses-catalog-dropdown-list">
                                     {subCategoryOptions.map(option => (
                                         <li key={option}><label><input type="checkbox" checked={activeFilters.category.includes(option)} onChange={() => handleFilterChange('category', option)} /> {option}</label></li>
                                     ))}
@@ -244,15 +245,15 @@ const Women = ({ onAddToCart, currentUser, justAddedProductId }) => {
                         )}
                     </div>
                 </div>
-                <div className="women-catalog-tools">
-                    <span className="women-catalog-item-count">{filteredAndSortedProducts.length} items</span>
-                    <div className="women-catalog-filter-group">
-                        <button onClick={() => toggleFilter('sort')} className="women-catalog-filter-btn">
+                <div className="glasses-catalog-tools">
+                    <span className="glasses-catalog-item-count">{filteredAndSortedProducts.length} items</span>
+                    <div className="glasses-catalog-filter-group">
+                        <button onClick={() => toggleFilter('sort')} className="glasses-catalog-filter-btn">
                             Sort <ChevronDownIcon />
                         </button>
                         {openFilter === 'sort' && (
-                            <div className="women-catalog-filter-dropdown women-catalog-sort-dropdown">
-                                <ul className="women-catalog-dropdown-list women-catalog-sort-list">
+                            <div className="glasses-catalog-filter-dropdown glasses-catalog-sort-dropdown">
+                                <ul className="glasses-catalog-dropdown-list glasses-catalog-sort-list">
                                     {sortOptions.map(option => (
                                         <li key={option.value} className={sortBy === option.value ? 'active' : ''} onClick={() => handleSortChange(option.value)}>
                                             {option.label}
@@ -273,17 +274,17 @@ const Women = ({ onAddToCart, currentUser, justAddedProductId }) => {
                 </div>
             </div>
 
-            <div className={`women-catalog-grid ${gridLayout}`}>
+            <div className={`glasses-catalog-grid ${gridLayout}`}>
                 {filteredAndSortedProducts.map(product => (
-                    <div key={product.id} className="women-catalog-card">
-                        <div className="women-catalog-img-wrapper">
-                            <img src={product.images[0]} alt={product.name} className="women-catalog-img-main" />
-                            {product.images[1] && <img src={product.images[1]} alt={product.name} className="women-catalog-img-hover" />}
+                    <div key={product.id} className="glasses-catalog-card">
+                        <div className="glasses-catalog-img-wrapper">
+                            <img src={product.images[0]} alt={product.name} className="glasses-catalog-img-main" />
+                            {product.images[1] && <img src={product.images[1]} alt={product.name} className="glasses-catalog-img-hover" />}
                         </div>
-                        <div className="women-catalog-info">
+                        <div className="glasses-catalog-info">
                             <p className="name">{product.name}</p>
                             <p className="price">${product.price}</p>
-                            <button className="women-catalog-add-btn" onClick={() => handleOpenPopup(product)}>
+                            <button className="glasses-catalog-add-btn" onClick={() => handleOpenPopup(product)}>
                                 <PlusIcon /> Add
                             </button>
                         </div>
@@ -297,4 +298,4 @@ const Women = ({ onAddToCart, currentUser, justAddedProductId }) => {
     );
 };
 
-export default Women;
+export default Glasses;
