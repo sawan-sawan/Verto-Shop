@@ -73,8 +73,8 @@ const Navbar = ({ cartItemCount, user, handleLogout }) => {
                             <AnimatePresence>
                                 {dropdownOpen && (
                                     <motion.div className="dropdown-menu" initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
-                                        <Link to="/sunglasses">Sunglasses</Link>
-                                        <Link to="/belts">Belt</Link>
+                                        <Link to="/glasses">Sunglasses</Link>
+                                        <Link to="/belt">Belt</Link>
                                         <Link to="/shoes">Shoes</Link>
                                         <Link to="/fleece">Fleece</Link>
                                     </motion.div>
@@ -122,8 +122,8 @@ const Navbar = ({ cartItemCount, user, handleLogout }) => {
                                     <AnimatePresence>
                                         {isMobileDropdownOpen && (
                                             <motion.div className="mobile-submenu" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}>
-                                                <Link to="/sunglasses" onClick={closeAllMenus}><Sun size={18} /> Sunglasses</Link>
-                                                <Link to="/belts" onClick={closeAllMenus}><GiBeltBuckles size={18} /> Belt</Link>
+                                                <Link to="/glasses" onClick={closeAllMenus}><Sun size={18} /> Sunglasses</Link>
+                                                <Link to="/belt" onClick={closeAllMenus}><GiBeltBuckles size={18} /> Belt</Link>
                                                 <Link to="/shoes" onClick={closeAllMenus}><Footprints size={18} /> Shoes</Link>
                                                 <Link to="/fleece" onClick={closeAllMenus}><Layers size={18} /> Fleece</Link>
                                             </motion.div>
